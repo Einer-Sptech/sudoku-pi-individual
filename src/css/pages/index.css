@@ -1,0 +1,16 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+
+:root{
+    --font-primary: "Outfit", sans-serif;
+}
+
+body{
+    font-family: var(--font-primary);
+}
+
+.logo {
+    height: 20px;
+    width: 138px;
+    flex-shrink: 0;
+    aspect-ratio: 69/10;;
+}
