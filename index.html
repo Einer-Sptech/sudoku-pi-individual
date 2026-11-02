@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="./src/css/pages/index/navbar.css">
     <link rel="stylesheet" href="./src/css/pages/index/inicio.css">
     <link rel="stylesheet" href="./src/css/pages/index/recurso.css">
+    <link rel="stylesheet" href="./src/css/pages/index/funcao.css">
 </head>
 <body>
     <header class="navbar">
@@ -18,8 +19,8 @@
                 <ul>
                     <li><a href="#Inicio">INÍCIO</a></li>
                     <li><a href="#Recurso">RECURSOS</a></li>
-                    <li><a href="">COMO FUNCIONA</a></li>
-                    <li><a href="">NÍVEIS</a></li>
+                    <li><a href="#Funcao">COMO FUNCIONA</a></li>
+                    <li><a href="#Niveis">NÍVEIS</a></li>
                 </ul>
             </nav>
             <div class="navbar-acoes">
@@ -132,6 +133,84 @@
                     </li>
                 </ul>
             </div>
+        </div>
+    </section>
+    <section class="funcao" id="Funcao">
+        <div class="funcao-container">
+            <div class="funcao-left">
+                <h2>Como funciona</h2>
+                <p class="funcao-descricao">Simples de começar, fácil de manter o hábito.</p>
+                <ol class="funcao-passos">
+                    <li class="passo">
+                        <span class="passo-numero">1</span>
+                        <div class="passo-texto">
+                            <h3>Crie sua conta</h3>
+                            <p>Leva menos de um minuto e é grátis.</p>
+                        </div>
+                    </li>
+                    <li class="passo">
+                        <span class="passo-numero">2</span>
+                        <div class="passo-texto">
+                            <h3>Escolha o nível e jogue</h3>
+                            <p>Selecione a dificuldade e resolva o tabuleiro no seu ritmo.</p>
+                        </div>
+                    </li>
+                    <li class="passo">
+                        <span class="passo-numero">3</span>
+                        <div class="passo-texto">
+                            <h3>Acompanhe seu progresso</h3>
+                            <p>Cada partida alimenta o seu painel de estatísticas.</p>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+            <div class="funcao-right">
+                <img src="./assets/img/img3.jpeg" alt="Mulher jogando sudoku no notebook, com uma xícara de chá e um caderno ao lado">
+            </div>
+        </div>
+    </section>
+    <section class="niveis" id="Niveis">
+        <div class="niveis-container">
+            <div class="niveis-header">
+                <h2>Escolha o seu nível</h2>
+                <p class="niveis-descricao">
+                    Cada nível muda a quantidade de células vazias no tabuleiro. Comece leve e chegue ao Especialista.
+                </p>
+            </div>
+            <ul class="niveis-grid">
+                <li>
+                    <article class="nivel">
+                        <span class="nivel-numero">01</span>
+                        <h3>Fácil</h3>
+                        <span class="nivel-celulas">40 células vazias</span>
+                        <p>Perfeito para aquecer e ganhar confiança no tabuleiro.</p>
+                    </article>
+                </li>
+                <li>
+                    <article class="nivel">
+                        <span class="nivel-numero">02</span>
+                        <h3>Médio</h3>
+                        <span class="nivel-celulas">48 células vazias</span>
+                        <p>O clássico equilibrado, ideal para o dia a dia.</p>
+                    </article>
+                </li>
+                <li>
+                    <article class="nivel">
+                        <span class="nivel-numero">03</span>
+                        <h3>Difícil</h3>
+                        <span class="nivel-celulas">54 células vazias</span>
+                        <p>Exige concentração e boas estratégias de eliminação.</p>
+                    </article>
+                </li>
+                <li>
+                    <article class="nivel">
+                        <span class="nivel-numero">04</span>
+                        <h3>Especialista</h3>
+                        <span class="nivel-celulas">58 células vazias</span>
+                        <p>Só para veteranos: cada número precisa de paciência.</p>
+                    </article>
+                </li>
+            </ul>
         </div>
     </section>
 </body>
