@@ -7,14 +7,15 @@
     <title>Sudoku Master</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="./src/css/pages/index/navbar.css">
+    <link rel="stylesheet" href="./src/css/pages/index/inicio.css">
 </head>
 <body>
     <header class="navbar">
         <div class="navbar-container">
-            <a href=""><img class="logo" src="./assets/branding/logo.png" alt="sudoku master"/></a>
+            <a href="#Inicio"><img class="logo" src="./assets/branding/logo.png" alt="sudoku master"/></a>
             <nav class="navbar-menu">
                 <ul>
-                    <li><a href="">INÍCIO</a></li>
+                    <li><a href="#Inicio">INÍCIO</a></li>
                     <li><a href="">RECURSOS</a></li>
                     <li><a href="">COMO FUNCIONA</a></li>
                     <li><a href="">NÍVEIS</a></li>
@@ -31,6 +32,47 @@
             </div>
         </div>
     </header>
-
+    <section class="inicio" id="Inicio"> 
+        <div class="inicio-split">
+            <div class="inicio-left">
+                <img src="./assets/img/img1.jpeg" alt="Duas pessoas jogando sudoku no papel">
+                <div class="left-quadrado1"></div>
+                <div class="left-quadrado2"></div>
+            </div>
+            <div class="inicio-right">
+                <div class="right-quadrado1"></div>
+                <div class="right-quadrado2"></div>
+                <div class="inicio-container">
+                    <span class="tag">Grátis · direto no navegador</span>
+                    <h1>Bem-vindo ao Sudoku Master</h1>
+                    <p class="subtitulo">
+                        Jogue Sudoku online com quatro níveis de dificuldade, cronômetro e dicas — e acompanhe
+                        todas as suas vitórias em um painel só seu.
+                    </p>
+                    <div class="inicio-botoes">
+                        <a class="btn btn-claro" href="">
+                            Criar conta grátis
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                        <a class="btn btn-contorno" href="">Já tenho conta</a>
+                    </div>
+                    <ul class="inicio-checks">
+                        <li>
+                            <i class="fa-solid fa-check"></i>
+                            Painel de estatísticas
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-check"></i>
+                            4 níveis de dificuldade
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-check"></i>
+                            Cronômetro e dicas
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
 </body>
 </html>
