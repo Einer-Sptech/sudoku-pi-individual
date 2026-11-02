@@ -10,47 +10,52 @@
 </head>
 <body class="pagina-auth">
     <main class="auth">
-        <div class="auth-card">
-            <header class="auth-header">
-                <h1>Crie sua conta</h1>
-                <p>Cadastre-se grátis para começar a jogar</p>
-            </header>
-            <form class="auth-form" id="form-cadastro" novalidate>
-                <div class="campo">
-                    <label for="email">E-mail</label>
-                    <div class="campo-input">
-                        <i class="fa-regular fa-envelope campo-icone"></i>
-                        <input type="email" id="email" name="email" placeholder="voce@exemplo.com" autocomplete="email" required>
+        <div class="auth-conteudo">
+            <a class="auth-voltar" href="../../index.html">
+                <i class="fa-solid fa-arrow-left"></i> Voltar ao início
+            </a>
+            <div class="auth-card">
+                <header class="auth-header">
+                    <h1>Crie sua conta</h1>
+                    <p>Cadastre-se grátis para começar a jogar</p>
+                </header>
+                <form class="auth-form" id="form-cadastro" novalidate>
+                    <div class="campo">
+                        <label for="email">E-mail</label>
+                        <div class="campo-input">
+                            <i class="fa-regular fa-envelope campo-icone"></i>
+                            <input type="email" id="email" name="email" placeholder="voce@exemplo.com" autocomplete="email" required>
+                        </div>
                     </div>
-                </div>
-                <div class="campo">
-                    <label for="senha">Senha</label>
-                    <div class="campo-input">
-                        <i class="fa-solid fa-lock campo-icone"></i>
-                        <input type="password" id="senha" name="senha" placeholder="••••••••" autocomplete="new-password" required>
-                        <button type="button" class="campo-olho" aria-label="Mostrar senha">
-                            <i class="fa-regular fa-eye"></i>
-                        </button>
+                    <div class="campo">
+                        <label for="senha">Senha</label>
+                        <div class="campo-input">
+                            <i class="fa-solid fa-lock campo-icone"></i>
+                            <input type="password" id="senha" name="senha" placeholder="••••••••" autocomplete="new-password" required>
+                            <button type="button" class="campo-olho" aria-label="Mostrar senha">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                        </div>
+                        <ul class="requisitos">
+                            <li data-req="tamanho"><span class="requisito-marca"></span>Pelo menos 8 caracteres</li>
+                            <li data-req="letra"><span class="requisito-marca"></span>Pelo menos uma letra</li>
+                            <li data-req="numero"><span class="requisito-marca"></span>Pelo menos um número</li>
+                        </ul>
                     </div>
-                    <ul class="requisitos">
-                        <li data-req="tamanho"><span class="requisito-marca"></span>Pelo menos 8 caracteres</li>
-                        <li data-req="letra"><span class="requisito-marca"></span>Pelo menos uma letra</li>
-                        <li data-req="numero"><span class="requisito-marca"></span>Pelo menos um número</li>
-                    </ul>
-                </div>
-                <div class="campo">
-                    <label for="confirmar-senha">Confirmar Senha</label>
-                    <div class="campo-input">
-                        <i class="fa-solid fa-lock campo-icone"></i>
-                        <input type="password" id="confirmar-senha" name="confirmar-senha" placeholder="••••••••" autocomplete="new-password" required>
-                        <button type="button" class="campo-olho" aria-label="Mostrar senha">
-                            <i class="fa-regular fa-eye"></i>
-                        </button>
+                    <div class="campo">
+                        <label for="confirmar-senha">Confirmar Senha</label>
+                        <div class="campo-input">
+                            <i class="fa-solid fa-lock campo-icone"></i>
+                            <input type="password" id="confirmar-senha" name="confirmar-senha" placeholder="••••••••" autocomplete="new-password" required>
+                            <button type="button" class="campo-olho" aria-label="Mostrar senha">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <button type="submit" class="btn-submit">Criar conta</button>
-            </form>
-            <p class="auth-rodape">Já tem uma conta? <a href="./login.html">Entrar</a></p>
+                    <button type="submit" class="btn-submit">Criar conta</button>
+                </form>
+                <p class="auth-rodape">Já tem uma conta? <a href="./login.html">Entrar</a></p>
+            </div>
         </div>
     </main>
 </body>

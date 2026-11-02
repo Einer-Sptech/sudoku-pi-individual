@@ -28,7 +28,31 @@ body {
     padding: 24px;
 }
 
-/* Card */
+.auth-conteudo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    width: 100%;
+    max-width: 430px;
+}
+
+.auth-voltar {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--azul);
+    text-decoration: none;
+}
+
+.auth-voltar:hover { text-decoration: underline; }
+
+.auth-voltar:focus-visible {
+    outline: 2px solid var(--azul);
+    outline-offset: 2px;
+}
 
 .auth-card {
     width: 100%;
@@ -192,7 +216,7 @@ body {
 .auth-rodape {
     margin-top: 20px;
     text-align: center;
-    font-size: 12px;
+    font-size: 14px;
     color: rgba(54, 76, 99, 0.8);
 }
 
