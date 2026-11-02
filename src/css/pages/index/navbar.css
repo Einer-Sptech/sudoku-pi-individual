@@ -8,11 +8,19 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 50px;
+}
+
 body{
     font-family: var(--font-primary);
 }
 
 .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
     background: var(--fundo);
     height: 50px;
     padding: 0 88px;
@@ -44,11 +52,11 @@ body{
 .navbar a,
 .link-entrar {
     color: rgba(45, 67, 86, 0.80);
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     line-height: 16px;
     letter-spacing: 1.2px;
-    text-transform: uppercase;
+    text-transform: none;
     text-decoration: none;
 }
 
@@ -58,13 +66,14 @@ body{
     gap: 16px;
 }
 
-.btn-primary {
+.navbar .btn-navbar {
     background: var(--azul);
-    color: #ffff !important;
-    padding: 7.5px 15px;
+    color: #fff;
+    padding: 9px 16px;
     border-radius: 10px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    text-transform: none;
 }
 
 .link-entrar {
