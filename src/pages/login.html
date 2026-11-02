@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../../assets/branding/Frame.png" />
+    <title>Entrar | Sudoku Master</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="../css/pages/login.css">
+</head>
+<body class="pagina-auth">
+    <main class="auth">
+        <div class="auth-conteudo">
+            <a class="auth-voltar" href="../../index.html">
+                <i class="fa-solid fa-arrow-left"></i> Voltar ao início
+            </a>
+            <div class="auth-card">
+                <header class="auth-header">
+                    <h1>Bem-vindo de volta</h1>
+                    <p>Entre na sua conta para jogar</p>
+                </header>
+                <form class="auth-form" id="form-login" novalidate>
+                    <div class="campo">
+                        <label for="email">E-mail</label>
+                        <div class="campo-input">
+                            <i class="fa-regular fa-envelope campo-icone"></i>
+                            <input type="email" id="email" name="email" placeholder="voce@exemplo.com" autocomplete="email" required>
+                        </div>
+                    </div>
+                    <div class="campo">
+                        <label for="senha">Senha</label>
+                        <div class="campo-input">
+                            <i class="fa-solid fa-lock campo-icone"></i>
+                            <input type="password" id="senha" name="senha" placeholder="••••••••" autocomplete="current-password" required>
+                            <button type="button" class="campo-olho" aria-label="Mostrar senha">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-submit">Entrar</button>
+                </form>
+                <p class="auth-rodape">Não tem uma conta? <a href="./cadastro.html">Cadastre-se</a></p>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
