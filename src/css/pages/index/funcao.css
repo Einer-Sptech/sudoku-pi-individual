@@ -1,6 +1,6 @@
 .funcao {
     background: var(--fundo);
-    padding: 96px 88px;                /* confirme o padding da seção no Figma */
+    padding: 96px 88px;
 }
 
 .funcao-container {
@@ -13,13 +13,13 @@
     margin: 0 auto;
 }
 
-/* ---------- Coluna esquerda ---------- */
+/* parte esquerda */
 
 .funcao-left {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 8px;                          /* entre título e descrição; confirme no Figma */
+    gap: 8px;
 }
 
 .funcao-left h2 {
@@ -40,21 +40,19 @@
 .funcao-passos {
     display: flex;
     flex-direction: column;
-    gap: 16px;                         /* entre os 3 cards */
-    padding-top: 32px;                 /* só no topo, como você passou */
+    gap: 16px;
+    padding-top: 32px;
     list-style: none;
 }
-
-/* ---------- Passo (card) ---------- */
 
 .passo {
     display: flex;
     align-items: center;
-    gap: 16px;                         /* era a camada "Margin"; confirme */
+    gap: 16px;
     padding: 20px;
     background: #fff;
     border: 1px solid rgba(54, 76, 99, 0.08);
-    border-radius: 12px;               /* confirme o raio dos cards no Figma */
+    border-radius: 12px;
     box-shadow: 0 1px 3px rgba(54, 76, 99, 0.08);
 }
 
@@ -88,7 +86,7 @@
     color: rgba(54, 76, 99, 0.75);
 }
 
-/* ---------- Coluna direita ---------- */
+/* Parte direita */
 
 .funcao-right {
     position: relative;

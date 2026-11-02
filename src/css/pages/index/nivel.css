@@ -1,0 +1,88 @@
+.niveis {
+    background: var(--azul);
+    padding: 96px 88px;
+}
+
+.niveis-container {
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.niveis-header {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.niveis-header h2 {
+    font-family: var(--font-primary);
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    color: #fff;
+}
+
+.niveis-descricao {
+    max-width: 420px;
+    font-family: var(--font-secondary);
+    font-size: 16px;
+    line-height: 24px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.niveis-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    list-style: none;
+}
+
+.nivel {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 100%;
+    padding: 28px;
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.nivel-numero {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1;
+    color: rgba(54, 76, 99, 0.2);
+}
+
+.nivel h3 {
+    margin-top: 9.8px;
+    font-family: var(--font-primary);
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--azul);
+}
+
+.nivel-celulas {
+    margin-top: 9.8px;
+    font-family: var(--font-primary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.55px;
+    text-transform: uppercase;
+    color: rgba(54, 76, 99, 0.7);
+}
+
+.nivel p {
+    margin-top: 30.32px;
+    font-family: var(--font-secondary);
+    font-size: 14px;
+    line-height: 20px;
+    color: rgba(54, 76, 99, 0.8);
+}
