@@ -2,15 +2,75 @@
 
 :root{
     --font-primary: "Outfit", sans-serif;
+    --azul: #364C63;
+    --fundo: #F7F7F6;
 }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body{
     font-family: var(--font-primary);
 }
 
+.navbar {
+    background: var(--fundo);
+    height: 50px;
+    padding: 0 88px;
+}
+
+.navbar-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1280px;
+    min-height: 50px;
+    margin: 0 auto;
+}
+
 .logo {
     height: 20px;
-    width: 138px;
-    flex-shrink: 0;
-    aspect-ratio: 69/10;;
+    width: auto;
+    display: block;
 }
+
+.navbar-menu ul {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    list-style: none;
+}
+
+.navbar a,
+.link-entrar {
+    color: rgba(45, 67, 86, 0.80);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.navbar-acoes {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.btn-primary {
+    background: var(--azul);
+    color: #ffff !important;
+    padding: 7.5px 15px;
+    border-radius: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.link-entrar {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--azul);
+}
+
