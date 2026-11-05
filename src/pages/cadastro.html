@@ -7,6 +7,7 @@
     <title>Criar conta | Sudoku Master</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="../css/pages/cadastro.css">
+    <script src="../js/cadastro.js" defer></script>
 </head>
 <body class="pagina-auth">
     <main class="auth">
@@ -21,21 +22,30 @@
                 </header>
                 <form class="auth-form" id="form-cadastro" novalidate>
                     <div class="campo">
+                        <label for="nome">Nome de Usuário</label>
+                        <div class="campo-input">
+                            <input type="text" id="ipt_nome" name="nome" autocomplete="nome" required>
+                        </div>
+                        <span class="erro" id="erro-email"></span>
+                    </div>
+                    <div class="campo">
                         <label for="email">E-mail</label>
                         <div class="campo-input">
                             <i class="fa-regular fa-envelope campo-icone"></i>
-                            <input type="email" id="email" name="email" placeholder="voce@exemplo.com" autocomplete="email" required>
+                            <input type="email" id="ipt_email" name="email" placeholder="voce@exemplo.com" autocomplete="email" required>
                         </div>
+                        <span class="erro" id="erro-email"></span>
                     </div>
                     <div class="campo">
                         <label for="senha">Senha</label>
                         <div class="campo-input">
                             <i class="fa-solid fa-lock campo-icone"></i>
-                            <input type="password" id="senha" name="senha" placeholder="••••••••" autocomplete="new-password" required>
+                            <input type="password" id="ipt_senha" name="senha" placeholder="••••••••" autocomplete="new-password" required>
                             <button type="button" class="campo-olho" aria-label="Mostrar senha">
                                 <i class="fa-regular fa-eye"></i>
                             </button>
                         </div>
+                        <span class="erro" id="erro-senha"></span>
                         <ul class="requisitos">
                             <li data-req="tamanho"><span class="requisito-marca"></span>Pelo menos 8 caracteres</li>
                             <li data-req="letra"><span class="requisito-marca"></span>Pelo menos uma letra</li>
@@ -46,17 +56,81 @@
                         <label for="confirmar-senha">Confirmar Senha</label>
                         <div class="campo-input">
                             <i class="fa-solid fa-lock campo-icone"></i>
-                            <input type="password" id="confirmar-senha" name="confirmar-senha" placeholder="••••••••" autocomplete="new-password" required>
+                            <input type="password" id="ipt_confirmar" name="confirmar-senha" placeholder="••••••••" autocomplete="new-password" required>
                             <button type="button" class="campo-olho" aria-label="Mostrar senha">
                                 <i class="fa-regular fa-eye"></i>
                             </button>
                         </div>
+                        <span class="erro" id="erro-confirmar"></span>
                     </div>
-                    <button type="submit" class="btn-submit">Criar conta</button>
+                    <button type="submit" class="btn-submit" onclick="Cadastrar()">Criar conta</button>
                 </form>
-                <p class="auth-rodape">Já tem uma conta? <a href="./login.html">Entrar</a></p>
+                <p class="auth-rodape">Já tem uma conta? <a href="login.html">Entrar</a></p>
             </div>
         </div>
     </main>
 </body>
 </html>
+<script>
+    let usuarios = [];
+    let emails = [];
+    let senhas = [];
+
+    if (localStorage.getItem("usuarios") != null) {
+        usuarios = JSON.parse(localStorage.getItem("usuarios"));
+        emails = JSON.parse(localStorage.getItem("emails"));
+        senhas = JSON.parse(localStorage.getItem("senhas"));
+    }
+
+    function Cadastrar(){
+        let nome = ipt_nome.value.trim();
+        let email = ipt_email.value.trim();
+        let senha = ipt_senha.value;
+        let confirmar = ipt_confirmar.value;
+
+        let nomeRepetido = false;
+        let emailRepetido = false;
+
+        if(nome == ""){
+            alert("Digite o nome de usuário");
+        }else if(nome.length < 3){
+            alert("O usuário deve ter pelo menos 3 caracteres");
+        }else if(email == ""){
+            alert("Digite o e-mail");
+        }else if(email.indexOf("@") == -1 || email.indexOf(".") == -1) {
+            alert("E-mail inválido");
+        }else if(senha.length < 8){
+            alert("A senha deve ter pleo menos 8 caracteres");
+        }else if(confirmar != senha){
+            alert("As senhas não são iguais");
+        }else{
+            for(let cont = 0; cont < usuarios.length; cont++){
+                if(usuarios[cont].toLowerCase() == nome.toLowerCase()){
+                    nomeRepetido = true;
+                }
+                if(emails[cont].toLowerCase() == email.toLowerCase()){
+                    emailRepetido = true;
+                }
+            }
+
+            if(nomeRepetido == true){
+                alert("Esse usuário já está cadastrado");
+            }else if(emailRepetido == true){
+                alert("Esse e-mail já está cadastrado")
+            }else{
+                usuarios.push(nome);
+                emails.push(email);
+                senhas.push(senha);
+
+                localStorage.setItem("usuarios", JSON.stringify(usuarios));
+                localStorage.setItem("emails", JSON.stringify(emails));
+                localStorage.setItem("senhas", JSON.stringify(senhas));
+
+                alert("Usuario Cadastrado");
+                setTimeout(() => {
+                    window.location.href = "login.html"
+                }, 2000);
+            }
+        }
+    }
+</script>
