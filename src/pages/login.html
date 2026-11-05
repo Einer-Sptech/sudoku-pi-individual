@@ -24,20 +24,22 @@
                         <label for="email">E-mail</label>
                         <div class="campo-input">
                             <i class="fa-regular fa-envelope campo-icone"></i>
-                            <input type="email" id="email" name="email" placeholder="voce@exemplo.com" autocomplete="email" required>
+                            <input type="email" id="ipt_email" name="email" placeholder="voce@exemplo.com" autocomplete="email" required>
                         </div>
+                        <span class="erro" id="erro-email"></span>
                     </div>
                     <div class="campo">
                         <label for="senha">Senha</label>
                         <div class="campo-input">
                             <i class="fa-solid fa-lock campo-icone"></i>
-                            <input type="password" id="senha" name="senha" placeholder="••••••••" autocomplete="current-password" required>
+                            <input type="password" id="ipt_senha" name="senha" placeholder="••••••••" autocomplete="current-password" required>
                             <button type="button" class="campo-olho" aria-label="Mostrar senha">
                                 <i class="fa-regular fa-eye"></i>
                             </button>
                         </div>
+                        <span class="erro" id="erro-senha"></span>
                     </div>
-                    <button type="submit" class="btn-submit">Entrar</button>
+                    <button type="submit" class="btn-submit" onclick="entrar()">Entrar</button>
                 </form>
                 <p class="auth-rodape">Não tem uma conta? <a href="./cadastro.html">Cadastre-se</a></p>
             </div>
@@ -45,3 +47,38 @@
     </main>
 </body>
 </html>
+<script>
+    let emails = [];
+    let senhas = [];
+
+    if (localStorage.getItem("emails") != null) {
+        emails = JSON.parse(localStorage.getItem("emails"));
+        senhas = JSON.parse(localStorage.getItem("senhas"));
+    }
+
+    function entrar() {
+        let email = ipt_email.value.trim();
+        let senha = ipt_senha.value;
+        let achou = false;
+
+        if (email == "") {
+            alert("Digite o e-mail!");
+        } else if (senha == "") {
+            alert("Digite a senha!");
+        } else {
+            for (let cont = 0; cont < emails.length; cont++) {
+                if (emails[cont].toLowerCase() == email.toLowerCase() && senhas[cont] == senha) {
+                    achou = true;
+                }
+            }
+
+            if (achou == true) {
+                alert('Entrando na Plataforma')
+                window.location.href = "index.html";
+                
+            } else {
+                alert("E-mail ou senha incorretos!");
+            }
+        }
+    }
+</script>

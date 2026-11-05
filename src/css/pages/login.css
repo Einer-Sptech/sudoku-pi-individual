@@ -130,6 +130,17 @@ body { font-family: var(--font-secondary); }
     box-shadow: 0 0 0 3px rgba(54, 76, 99, 0.15);
 }
 
+.erro {
+    font-size: 12px;
+    color: #c0392b;
+}
+
+.erro:empty { display: none; }
+
+.campo-input input.invalido {
+    border-color: #c0392b;
+}
+
 .campo-icone {
     position: absolute;
     left: 14px;
