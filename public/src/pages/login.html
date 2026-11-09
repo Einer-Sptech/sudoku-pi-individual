@@ -26,20 +26,19 @@
                             <i class="fa-regular fa-envelope campo-icone"></i>
                             <input type="email" id="ipt_email" name="email" placeholder="voce@exemplo.com" autocomplete="email" required>
                         </div>
-                        <span class="erro" id="erro-email"></span>
                     </div>
                     <div class="campo">
                         <label for="senha">Senha</label>
                         <div class="campo-input">
                             <i class="fa-solid fa-lock campo-icone"></i>
                             <input type="password" id="ipt_senha" name="senha" placeholder="••••••••" autocomplete="current-password" required>
-                            <button type="button" class="campo-olho" aria-label="Mostrar senha">
-                                <i class="fa-regular fa-eye"></i>
+                            <button type="button" class="campo-olho" aria-label="Mostrar senha" onclick="alternarSenha(ipt_senha, olho_senha)">
+                                <i id="olho_senha" class="fa-regular fa-eye"></i>
                             </button>
                         </div>
-                        <span class="erro" id="erro-senha"></span>
                     </div>
-                    <button type="submit" class="btn-submit" onclick="entrar()">Entrar</button>
+                    <div id="div_mensagem" class="mensagem" role="alert"></div>
+                    <button type="button" class="btn-submit" onclick="entrar()">Entrar</button>
                 </form>
                 <p class="auth-rodape">Não tem uma conta? <a href="./cadastro.html">Cadastre-se</a></p>
             </div>
@@ -48,37 +47,62 @@
 </body>
 </html>
 <script>
-    let emails = [];
-    let senhas = [];
-
-    if (localStorage.getItem("emails") != null) {
-        emails = JSON.parse(localStorage.getItem("emails"));
-        senhas = JSON.parse(localStorage.getItem("senhas"));
+    function mostrarMensagem(texto, tipo){
+        div_mensagem.innerHTML = texto;
+        div_mensagem.className = "mensagem " + tipo;
     }
 
-    function entrar() {
+    function limparMensagem(){
+        div_mensagem.innerHTML = "";
+        div_mensagem.className = "mensagem";
+    }
+
+    function entrar(){
         let email = ipt_email.value.trim();
         let senha = ipt_senha.value;
-        let achou = false;
 
-        if (email == "") {
-            alert("Digite o e-mail!");
-        } else if (senha == "") {
-            alert("Digite a senha!");
-        } else {
-            for (let cont = 0; cont < emails.length; cont++) {
-                if (emails[cont].toLowerCase() == email.toLowerCase() && senhas[cont] == senha) {
-                    achou = true;
+        if(email == '' || senha == ''){
+            mostrarMensagem("Preencha o e-mail e a senha.", "erro");
+        }else{
+            limparMensagem();
+
+            fetch("/usuarios/autenticar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    emailServer: email,
+                    senhaServer: senha
+                })
+            }).then(function (resposta){
+                if(resposta.ok){
+                    resposta.json().then(function (json){
+                        sessionStorage.ID_USUARIO = json.id;
+                        sessionStorage.NOME_USUARIO = json.nome;
+                        sessionStorage.EMAIL_USUARIO = json.email;
+                        mostrarMensagem("Login realizado! Entrando...", "sucesso");
+
+                        setTimeout(function(){
+                            window.location = "/src/pages/inicio.html";
+                        }, 2000);
+                    });
+                }else{
+                    resposta.text().then(function (texto){
+                        mostrarMensagem(texto, "erro");
+                    })
                 }
-            }
+            })
+        }
+    }
 
-            if (achou == true) {
-                alert('Entrando na Plataforma')
-                window.location.href = "index.html";
-                
-            } else {
-                alert("E-mail ou senha incorretos!");
-            }
+    function alternarSenha(campo, icone){
+        if(campo.type == "password") {
+            campo.type = "text";
+            icone.className = "fa-regular fa-eye-slash";
+        }else{
+            campo.type = "password";
+            icone.className = "fa-regular fa-eye";
         }
     }
 </script>

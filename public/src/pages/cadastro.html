@@ -26,7 +26,6 @@
                         <div class="campo-input">
                             <input type="text" id="ipt_nome" name="nome" autocomplete="nome" required>
                         </div>
-                        <span class="erro" id="erro-email"></span>
                     </div>
                     <div class="campo">
                         <label for="email">E-mail</label>
@@ -34,22 +33,20 @@
                             <i class="fa-regular fa-envelope campo-icone"></i>
                             <input type="email" id="ipt_email" name="email" placeholder="voce@exemplo.com" autocomplete="email" required>
                         </div>
-                        <span class="erro" id="erro-email"></span>
                     </div>
                     <div class="campo">
                         <label for="senha">Senha</label>
                         <div class="campo-input">
                             <i class="fa-solid fa-lock campo-icone"></i>
-                            <input type="password" id="ipt_senha" name="senha" placeholder="••••••••" autocomplete="new-password" required>
-                            <button type="button" class="campo-olho" aria-label="Mostrar senha">
-                                <i class="fa-regular fa-eye"></i>
+                            <input type="password" id="ipt_senha" oninput="mostrarRequisitos()" name="senha" placeholder="••••••••" autocomplete="new-password" required>
+                            <button type="button" class="campo-olho" aria-label="Mostrar senha" onclick="alternarSenha(ipt_senha, olho_senha)">
+                                <i id="olho_senha" class="fa-regular fa-eye"></i>
                             </button>
                         </div>
-                        <span class="erro" id="erro-senha"></span>
                         <ul class="requisitos">
-                            <li data-req="tamanho"><span class="requisito-marca"></span>Pelo menos 8 caracteres</li>
-                            <li data-req="letra"><span class="requisito-marca"></span>Pelo menos uma letra</li>
-                            <li data-req="numero"><span class="requisito-marca"></span>Pelo menos um número</li>
+                            <li id="req_tamanho"><span class="requisito-marca"></span>Pelo menos 8 caracteres</li>
+                            <li id="req_letra"><span class="requisito-marca"></span>Pelo menos uma letra</li>
+                            <li id="req_numero"><span class="requisito-marca"></span>Pelo menos um número</li>
                         </ul>
                     </div>
                     <div class="campo">
@@ -57,13 +54,13 @@
                         <div class="campo-input">
                             <i class="fa-solid fa-lock campo-icone"></i>
                             <input type="password" id="ipt_confirmar" name="confirmar-senha" placeholder="••••••••" autocomplete="new-password" required>
-                            <button type="button" class="campo-olho" aria-label="Mostrar senha">
-                                <i class="fa-regular fa-eye"></i>
+                            <button type="button" class="campo-olho" aria-label="Mostrar senha" onclick="alternarSenha(ipt_confirmar, olho_confirmar)">
+                                <i id="olho_confirmar" class="fa-regular fa-eye"></i>
                             </button>
                         </div>
-                        <span class="erro" id="erro-confirmar"></span>
                     </div>
-                    <button type="submit" class="btn-submit" onclick="Cadastrar()">Criar conta</button>
+                    <div id="div_mensagem" class="mensagem" role="alert"></div>
+                    <button type="button" class="btn-submit" onclick="cadastrar()">Criar conta</button>
                 </form>
                 <p class="auth-rodape">Já tem uma conta? <a href="login.html">Entrar</a></p>
             </div>
@@ -72,65 +69,135 @@
 </body>
 </html>
 <script>
-    let usuarios = [];
-    let emails = [];
-    let senhas = [];
+    let temTamanho = false;
+    let temLetra = false;
+    let temNumero = false;
 
-    if (localStorage.getItem("usuarios") != null) {
-        usuarios = JSON.parse(localStorage.getItem("usuarios"));
-        emails = JSON.parse(localStorage.getItem("emails"));
-        senhas = JSON.parse(localStorage.getItem("senhas"));
+    function mostrarMensagem(texto, tipo){
+        div_mensagem.innerHTML = texto;
+        div_mensagem.className = "mensagem " + tipo;
     }
 
-    function Cadastrar(){
+    function limparMensagem(){
+        div_mensagem.innerHTML = "";
+        div_mensagem.className = "mensagem";
+    }
+
+    function mostrarRequisitos(){
+        let senha = ipt_senha.value;
+
+        temTamanho = senha.length >= 8;
+        temLetra = false;
+        temNumero = false;
+
+        for(let i = 0; i < senha.length; i++){
+            let caractere = senha[i];
+
+            if(caractere >= "0" && caractere <= "9"){
+                temNumero = true;
+            }
+            if(caractere.toLowerCase() != caractere.toUpperCase()){
+                temLetra = true;
+            }
+        }
+
+        if(temTamanho) {req_tamanho.classList.add("ok");}else{req_tamanho.classList.remove("ok");}
+        if(temLetra){req_letra.classList.add("ok");}else{req_letra.classList.remove("ok");}
+        if(temNumero){req_numero.classList.add("ok");}else{req_numero.classList.remove("ok");}
+    }
+
+    function limparMarcas(){
+        ipt_nome.classList.remove("invalido");
+        ipt_email.classList.remove("invalido");
+        ipt_senha.classList.remove("invalido");
+        ipt_confirmar.classList.remove("invalido");
+    }
+
+    function cadastrar(){
         let nome = ipt_nome.value.trim();
         let email = ipt_email.value.trim();
         let senha = ipt_senha.value;
         let confirmar = ipt_confirmar.value;
 
-        let nomeRepetido = false;
-        let emailRepetido = false;
+        let erros = [];
 
-        if(nome == ""){
-            alert("Digite o nome de usuário");
-        }else if(nome.length < 3){
-            alert("O usuário deve ter pelo menos 3 caracteres");
-        }else if(email == ""){
-            alert("Digite o e-mail");
-        }else if(email.indexOf("@") == -1 || email.indexOf(".") == -1) {
-            alert("E-mail inválido");
-        }else if(senha.length < 8){
-            alert("A senha deve ter pleo menos 8 caracteres");
-        }else if(confirmar != senha){
-            alert("As senhas não são iguais");
+        limparMarcas();
+        mostrarRequisitos();
+
+        if(nome.length < 3){
+            erros.push("O usuário deve ter pelo menos 3 caracteres.");
+            ipt_nome.classList.add("invalido");
+        }
+        if(email.indexOf("@") == -1 || email.indexOf(".") == -1){
+            erros.push("E-mail inválido.");
+            ipt_email.classList.add("invalido");
+        }
+        if(!temTamanho){
+            erros.push("A senha deve ter pelo menos 8 caracteres.");
+            ipt_senha.classList.add("invalido");
+        }
+        if(!temLetra){
+            erros.push("A senha deve ter pelo menos uma letra.");
+            ipt_senha.classList.add("invalido");
+        }
+        if(!temNumero){
+            erros.push("A senha deve ter pelo menos um número.");
+            ipt_senha.classList.add("invalido");
+        }
+        if(confirmar != senha){
+            erros.push("As senhas não são iguais");
+            ipt_confirmar.classList.add("invalido");
+        }
+
+        if(erros.length > 0 ){
+            let msg = "";
+
+            for(let i = 0; i < erros.length; i++){
+                msg += `${erros[i]}<br>`;
+            }
+
+            mostrarMensagem(msg, "erro");
         }else{
-            for(let cont = 0; cont < usuarios.length; cont++){
-                if(usuarios[cont].toLowerCase() == nome.toLowerCase()){
-                    nomeRepetido = true;
+            limparMensagem();
+
+            fetch("/usuarios/cadastrar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    nomeServer: nome,
+                    emailServer: email,
+                    senhaServer: senha
+                })
+            }).then(function (resposta){
+                if(resposta.ok){
+                    mostrarMensagem("Cadastro realizado! Redirecionando para o Login...", "sucesso");
+
+                    setTimeout(function () {
+                        window.location = "/src/pages/login.html";
+                    }, 2000);
+                }else{
+                    resposta.text().then(function (texto){
+                        mostrarMensagem(texto, "erro");
+
+                        if(resposta.status == 409){
+                            ipt_nome.classList.add("invalido");
+                            ipt_email.classList.add("invalido");
+                        }
+                    });
                 }
-                if(emails[cont].toLowerCase() == email.toLowerCase()){
-                    emailRepetido = true;
-                }
-            }
+            });
+        }
+    }
 
-            if(nomeRepetido == true){
-                alert("Esse usuário já está cadastrado");
-            }else if(emailRepetido == true){
-                alert("Esse e-mail já está cadastrado")
-            }else{
-                usuarios.push(nome);
-                emails.push(email);
-                senhas.push(senha);
-
-                localStorage.setItem("usuarios", JSON.stringify(usuarios));
-                localStorage.setItem("emails", JSON.stringify(emails));
-                localStorage.setItem("senhas", JSON.stringify(senhas));
-
-                alert("Usuario Cadastrado");
-                setTimeout(() => {
-                    window.location.href = "login.html"
-                }, 2000);
-            }
+    function alternarSenha(campo, icone){
+        if(campo.type == "password") {
+            campo.type = "text";
+            icone.className = "fa-regular fa-eye-slash";
+        }else{
+            campo.type = "password";
+            icone.className = "fa-regular fa-eye";
         }
     }
 </script>
