@@ -1,0 +1,76 @@
+.jogar-cabecalho {
+    max-width: 672px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.etiqueta-contorno {
+    border: 1px solid var(--borda);
+}
+
+.jogar-cabecalho .pagina-titulo {
+    font-size: 48px;
+}
+
+.jogar-cabecalho .pagina-subtitulo {
+    max-width: 512px;
+    margin: 16px auto 0;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.niveis-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 40px;
+}
+
+.card-nivel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 188px;
+    padding: 20px;
+}
+
+.nivel-icone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 6px;
+    border-radius: 12px;
+    font-size: 20px;
+    background: var(--borda);
+}
+
+.nivel-nome {
+    font-family: var(--font-primary);
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.nivel-descricao {
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--texto-suave);
+}
+
+.nivel-celulas {
+    margin-top: auto;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14rem;
+    text-transform: uppercase;
+    color: var(--texto-suave);
+}
+
+.jogar-dica {
+    margin-top: 48px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--texto-suave);
+}
