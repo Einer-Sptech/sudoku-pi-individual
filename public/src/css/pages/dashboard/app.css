@@ -1,0 +1,92 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@600&family=Inter:wght@400;500;600&display=swap");
+
+:root {
+    --font-primary: "Outfit", sans-serif;
+    --font-secondary: "Inter", sans-serif;
+    --azul: #364C63;
+    --fundo: #F7F7F6;
+    --texto: #4A5568;
+    --texto-suave: #5B6B7C;
+    --borda: #E4E6E8;
+    --largura-pagina: 1024px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: var(--font-secondary);
+    background: var(--fundo);
+    color: var(--texto);
+}
+
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+button { font-family: inherit; }
+
+/* ---------- Moldura: menu lateral + conteúdo ---------- */
+
+.app {
+    display: flex;
+    min-height: 100vh;
+}
+
+.conteudo {
+    flex: 1;
+    min-width: 0;                      /* deixa o conteúdo encolher sem estourar a tela */
+    padding: 40px 24px;
+}
+
+.pagina {
+    max-width: var(--largura-pagina);  /* cada página pode mudar este valor */
+    margin: 0 auto;
+}
+
+/* ---------- Padrão repetido em todas as páginas ---------- */
+
+.etiqueta {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: rgba(54, 76, 99, 0.08);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--azul);
+}
+
+.pagina-titulo {
+    margin-top: 16px;
+    font-family: var(--font-primary);
+    font-size: 36px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--texto);
+}
+
+.pagina-subtitulo {
+    max-width: 576px;
+    margin-top: 8px;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--texto-suave);
+}
+
+.card {
+    background: #fff;
+    border: 1px solid var(--borda);
+    border-radius: 16px;
+    transition: box-shadow 0.2s ease;
+}
+
+a.card:hover {
+    box-shadow: 0 8px 24px rgba(54, 76, 99, 0.12);
+}
+
+a:focus-visible,
+button:focus-visible {
+    outline: 2px solid var(--azul);
+    outline-offset: 2px;
+}

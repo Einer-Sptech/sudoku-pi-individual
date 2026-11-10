@@ -1,0 +1,105 @@
+.sidebar {
+    position: sticky;
+    top: 0;
+    width: 256px;
+    height: 100vh;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 24px 16px;
+    background: #fff;
+    border-right: 1px solid var(--borda);
+}
+
+.sidebar-logo {
+    display: block;
+    padding: 0 8px 24px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--borda);
+}
+
+.sidebar-logo img {
+    display: block;
+    height: 28px;
+    width: auto;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 7px; 
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--texto);
+    transition: background 0.2s ease;
+}
+
+.menu-item i {
+    width: 14px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.menu-item:hover {
+    background: rgba(54, 76, 99, 0.08);
+}
+
+.menu-item.ativo {
+    background: var(--azul);
+    color: #fff;
+}
+
+/* ---------- Rodapé do menu ---------- */
+
+.sidebar-usuario {
+    padding-top: 16px;
+    border-top: 1px solid var(--borda);
+}
+
+.usuario-nome {
+    padding: 0 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.usuario-email {
+    padding: 0 8px;
+    margin: 2px 0 12px;
+    font-size: 12px;
+    color: var(--texto-suave);
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.btn-sair {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    height: 36px;
+    padding: 0 12px;
+    background: #fff;
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--texto);
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-sair i { font-size: 16px; }
+
+.btn-sair:hover {
+    background: var(--fundo);
+}

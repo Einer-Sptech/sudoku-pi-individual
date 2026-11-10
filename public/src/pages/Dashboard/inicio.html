@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../../../assets/branding/Frame.png" />
+    <title>Início | Sudoku Master</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="../../css/pages/dashboard/app.css">
+    <link rel="stylesheet" href="../../css/pages/dashboard/sidebar.css">
+    <link rel="stylesheet" href="../../css/pages/dashboard/inicio/inicio.css">
+</head>
+<body>
+    <div class="app">
+        <aside class="sidebar">
+            <div>
+                <a class="sidebar-logo" href="inicio.html">
+                    <img src="../../../assets/branding/logo.png" alt="Sudoku Master">
+                </a>
+                <nav>
+                    <ul class="menu">
+                        <li><a class="menu-item ativo" href="inicio.html" aria-current="page"><i class="fa-solid fa-house"></i>Início</a></li>
+                        <li><a class="menu-item" href="jogar.html"><i class="fa-solid fa-gamepad"></i>Jogar</a></li>
+                        <li><a class="menu-item" href="painel.html"><i class="fa-solid fa-table-cells-large"></i>Painel</a></li>
+                        <li><a class="menu-item" href="perfil.html"><i class="fa-solid fa-user"></i>Perfil</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="sidebar-usuario">
+                <p class="usuario-nome" id="nomeUsuario">julio</p>
+                <p class="usuario-email" id="emailUsuario">julio229102@gmail.com</p>
+                <button type="button" class="btn-sair" onclick="sair()">
+                    <i class="fa-solid fa-right-from-bracket"></i>Sair
+                </button>
+            </div>
+        </aside>
+        <main class="conteudo">
+            <div class="pagina">
+                <header>
+                    <span class="etiqueta">Início</span>
+                    <h1 class="pagina-titulo">Olá, <span id="nomeSaudacao">julio</span></h1>
+                    <p class="pagina-subtitulo">Escolha um nível, jogue uma partida e acompanhe o seu progresso no painel.</p>
+                </header>
+                <section class="acoes">
+                    <a class="card card-acao card-escuro" href="jogar.html">
+                        <span class="acao-icone"><i class="fa-regular fa-circle-play"></i></span>
+                        <h2>Jogar agora</h2>
+                        <p>Escolha um nível e comece um tabuleiro novo.</p>
+                    </a>
+                    <a class="card card-acao" href="painel.html">
+                        <span class="acao-icone"><i class="fa-solid fa-chart-column"></i></span>
+                        <h2>Meu painel</h2>
+                        <p>Estatísticas, sequência de vitórias e últimas partidas.</p>
+                    </a>
+                </section>
+                <section>
+                    <h2 class="resumo-titulo">Resumo rápido</h2>
+                    <div class="kpis">
+                        <div class="card kpi">
+                            <div class="kpi-topo">
+                                <span class="kpi-rotulo">Partidas iniciadas</span>
+                                <span class="kpi-icone"><i class="fa-solid fa-gamepad"></i></span>
+                            </div>
+                            <p class="kpi-valor" id="kpiPartidas">2</p>
+                            <p class="kpi-dica" id="kpiVitorias">1 vitórias</p>
+                        </div>
+                        <div class="card kpi">
+                            <div class="kpi-topo">
+                                <span class="kpi-rotulo">Taxa de vitória</span>
+                                <span class="kpi-icone"><i class="fa-solid fa-trophy"></i></span>
+                            </div>
+                            <p class="kpi-valor" id="kpiPartidas">50%</p>
+                            <p class="kpi-dica" id="kpiVitorias">1 de 2 partidas</p>
+                        </div>
+                        <div class="card kpi">
+                            <div class="kpi-topo">
+                                <span class="kpi-rotulo">Sequência atual</span>
+                                <span class="kpi-icone"><i class="fa-solid fa-fire"></i></span>
+                            </div>
+                            <p class="kpi-valor" id="kpiPartidas">1</p>
+                            <p class="kpi-dica" id="kpiVitorias">Recorde: 1 vitória seguida</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
