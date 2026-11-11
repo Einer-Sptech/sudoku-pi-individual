@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="../../css/pages/dashboard/app.css">
     <link rel="stylesheet" href="../../css/pages/dashboard/sidebar.css">
+    <link rel="stylesheet" href="../../css/pages/dashboard/painel/painel.css">
 </head>
 <body>
     <div class="app">
@@ -28,13 +29,84 @@
             </div>
 
             <div class="sidebar-usuario">
-                <p class="usuario-nome" id="nomeUsuario">julio</p>
-                <p class="usuario-email" id="emailUsuario">julio229102@gmail.com</p>
+                <p class="usuario-nome" id="nomeUsuario">Einer</p>
+                <p class="usuario-email" id="emailUsuario">einer@gmail.com</p>
                 <button type="button" class="btn-sair" onclick="sair()">
                     <i class="fa-solid fa-right-from-bracket"></i>Sair
                 </button>
             </div>
         </aside>
+        <main class="conteudo">
+            <div class="pagina">
+                <header>
+                    <span class="etiqueta">Painel</span>
+                    <h1 class="pagina-titulo">Meu desempenho</h1>
+                    <p class="pagina-subtitulo"><span id="nomeSubtitulo">Einer</span>, aqui está o resumo das suas partidas e da sua sequência de vitórias.</p>
+                </header>
+                <section class="kpis-painel">
+                    <div class="card kpi">
+                        <div class="kpi-topo">
+                            <span class="kpi-rotulo">Partidas</span>
+                            <span class="kpi-icone"><i class="fa-solid fa-gamepad"></i></span>
+                        </div>
+                        <p class="kpi-valor" id="kpiPartidas">2</p>
+                        <p class="kpi-dica" id="kpiNaoConcluidas">1 não concluídas</p>
+                    </div>
+                    <div class="card kpi">
+                        <div class="kpi-topo">
+                            <span class="kpi-rotulo">% de vitórias</span>
+                            <span class="kpi-icone"><i class="fa-solid fa-bullseye"></i></span>
+                        </div>
+                        <p class="kpi-valor" id="kpiTaxa">50%</p>
+                        <p class="kpi-dica" id="kpiTaxaDica">1 de 2 partidas</p>
+                    </div>
+                    <div class="card kpi">
+                        <div class="kpi-topo">
+                            <span class="kpi-rotulo">Melhor tempo</span>
+                            <span class="kpi-icone"><i class="fa-solid fa-hourglass-half"></i></span>
+                        </div>
+                        <p class="kpi-valor" id="kpiMelhorTempo">06:34</p>
+                        <p class="kpi-dica">Partida mais rápida</p>
+                    </div>
+                    <div class="card kpi">
+                        <div class="kpi-topo">
+                            <span class="kpi-rotulo">Sequência máxima</span>
+                            <span class="kpi-icone"><i class="fa-solid fa-fire"></i></span>
+                        </div>
+                        <p class="kpi-valor" id="kpiSequenciaMax">1</p>
+                        <p class="kpi-dica">Vitórias seguidas</p>
+                    </div>
+                </section>
+                <section class="painel-linha">
+                    <div class="card card-partidas">
+                        <h2 class="partidas-titulo">Últimas partidas</h2>
+                        <ul class="partidas-lista" id="listaPartidas">
+                            <li class="partida">
+                                <div class="partida-topo">
+                                    <span class="selo selo-vitoria">Vitória</span>
+                                    <span class="partida-nivel">Fácil</span>
+                                </div>
+                                <div class="partida-info">
+                                    <span class="partida-tempo">06:34</span>
+                                    <span class="partida-data">05 de nov., 18:21</span>
+                                </div>
+                            </li>
+                            <li class="partida">
+                                <div class="partida-topo">
+                                    <span class="selo selo-nao-concluido">Não concluído</span>
+                                    <span class="partida-nivel">Especialista</span>
+                                </div>
+                                <div class="partida-info">
+                                    <span class="partida-tempo">00:37</span>
+                                    <span class="partida-data">26 de out., 17:28</span>
+                                </div>
+                            </li>
+                        </ul>
+                        <p class="partidas-vazio" id="semPartidas" hidden>Você ainda não jogou nenhuma partida.</p>
+                    </div>
+                </section>
+            </div>
+        </main>
     </div>
 </body>
 </html>
