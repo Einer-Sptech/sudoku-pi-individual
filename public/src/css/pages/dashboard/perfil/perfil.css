@@ -1,0 +1,182 @@
+.pagina-perfil {
+    --largura-pagina: 768px;
+}
+
+.perfil-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 32px;
+}
+
+.perfil-topo {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 24px;
+}
+
+.avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--azul);
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.perfil-nome {
+    font-family: var(--font-primary);
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.perfil-email {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 2px;
+    font-size: 14px;
+    color: var(--texto-suave);
+}
+
+.perfil-email i {
+    font-size: 14px;
+}
+
+.perfil-secao {
+    padding: 24px;
+}
+
+.secao-titulo {
+    font-family: var(--font-primary);
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.secao-descricao {
+    margin-top: 2px;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--texto-suave);
+}
+
+.campo-rotulo {
+    display: block;
+    margin-top: 20px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.campo-input {
+    display: block;
+    width: 100%;
+    height: 44px;
+    margin-top: 8px;
+    padding: 0 16px;
+    background: #fff;
+    border: 1px solid rgba(54, 76, 99, 0.25);
+    border-radius: 12px;
+    font-family: var(--font-secondary);
+    font-size: 14px;
+    color: var(--texto);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.campo-input:focus {
+    outline: none;
+    border-color: var(--azul);
+    box-shadow: 0 0 0 3px rgba(54, 76, 99, 0.15);
+}
+
+.btn-salvar {
+    height: 36px;
+    margin-top: 16px;
+    padding: 0 20px;
+    background: var(--azul);
+    border: 0;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2 ease;
+}
+
+.btn-salvar:hover {
+    background: #2B3E52;
+}
+
+.perfil-msg {
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--texto-suave);
+}
+
+.perfil-msg:empty {
+    display: none;
+}
+
+.info-lista {
+    margin-top: 8px;
+}
+
+.info-linha {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 8px 0;
+    font-size: 14px;
+}
+
+.info-rotulo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--texto-suave);
+}
+
+.info-rotulo i {
+    width: 16px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.info-valor {
+    font-weight: 500;
+    color: var(--texto);
+    text-align: right;
+    overflow-wrap: anywhere;
+}
+
+.btn-sair-conta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 44px;
+    margin-top: 16px;
+    padding: 0 20px;
+    background: #F0EFEB;
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--texto);
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-sair-conta i {
+    font-size: 16px;
+}
+
+.btn-sair-conta:hover {
+    background: #E8E7E2;
+}
