@@ -1,0 +1,141 @@
+.kpis-painel {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 32px;
+}
+
+.kpis {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.kpi {
+    min-height: 132px;
+    padding: 20px;
+}
+
+.kpi-topo{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.kpi-rotulo {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14rem;
+    text-transform: uppercase;
+    color: var(--texto-suave);
+}
+
+.kpi-icone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    background: #F0EFEB;
+    font-size: 14px;
+    color: var(--azul);
+}
+
+.kpi-valor {
+    margin-top: 10px;
+    font-family: var(--font-primary);
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.kpi-dica {
+    margin-top: 2px;
+    font-size: 12px;
+    color: var(--texto-suave);
+}
+
+.painel-linha {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 32px;
+}
+
+.card-partidas {
+    width: calc((100% - 32px) / 3);
+    min-width: 300px;
+    padding: 24px;
+}
+
+.partidas-titulo {
+    font-family: var(--font-primary);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.partidas-lista {
+    margin-top: 8px;
+}
+
+.partida {
+    padding: 14px 0;
+}
+
+.partida + .partida {
+    border-top: 1px solid var(--borda);
+}
+
+.partida-topo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.partida-nivel {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.partida-info {
+    display: flex;
+    gap: 16px;
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+.partida-tempo {
+    color: var(--texto);
+    font-variant-numeric: tabular-nums;
+}
+
+.partida-data {
+    color: var(--texto-suave);
+}
+
+.selo {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.selo-vitoria {
+    background: #E3F5EC;
+    color: #1E7A4C;
+}
+
+.selo-nao-concluido {
+    background: #ECEAE5;
+    color: #4F5E6D;
+}
+
+.partidas-vazio {
+    margin-top: 12px;
+    font-size: 14px;
+    color: var(--texto-suave);
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../../../assets/branding/Frame.png" />
+    <title>Resultado | Sudoku Master</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="../../css/pages/dashboard/app.css">
+    <link rel="stylesheet" href="../../css/pages/dashboard/sidebar.css">
+    <link rel="stylesheet" href="../../css/pages/dashboard/jogar/resultado.css">
+</head>
+<body>
+    <div class="app">
+        <aside class="sidebar">
+            <div>
+                <a class="sidebar-logo" href="inicio.html">
+                    <img src="../../../assets/branding/logo.png" alt="Sudoku Master">
+                </a>
+
+                <nav>
+                    <ul class="menu">
+                        <li><a class="menu-item" href="inicio.html"><i class="fa-solid fa-house"></i>Início</a></li>
+                        <li><a class="menu-item ativo" href="jogar.html" aria-current="page"><i class="fa-solid fa-gamepad"></i>Jogar</a></li>
+                        <li><a class="menu-item" href="painel.html"><i class="fa-solid fa-table-cells-large"></i>Painel</a></li>
+                        <li><a class="menu-item" href="perfil.html"><i class="fa-solid fa-user"></i>Perfil</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="sidebar-usuario">
+                <p class="usuario-nome" id="nomeUsuario">Einer</p>
+                <p class="usuario-email" id="emailUsuario">einer@gmail.com</p>
+                <button type="button" class="btn-sair" onclick="sair()">
+                    <i class="fa-solid fa-right-from-bracket"></i>Sair
+                </button>
+            </div>
+        </aside>
+        <main class="conteudo">
+            <div class="pagina pagina-resultado">
+                <section class="card resultado-card">
+                    <span class="resultado-selo">Concluído</span>
+                    <h1 class="resultado-titulo">Tabuleiro resolvido!</h1>
+                    <p class="resultado-texto">Todas as células no lugar certo. Veja como foi o seu ritmo nesta partida</p>
+                    <dl class="resultado-metricas">
+                        <div class="metrica">
+                            <dt>Tempo</dt>
+                            <dd id="resTempo">05:48</dd>
+                        </div>
+                        <div class="metrica">
+                            <dt>Nível</dt>
+                            <dd id="resNivel">Fácil</dd>
+                        </div>
+                        <div class="metrica">
+                            <dt>Erros</dt>
+                            <dd id="resErros">1</dd>
+                        </div>
+                        <div class="metrica">
+                            <dt>Dicas</dt>
+                            <dd id="resDicas">1</dd>
+                        </div>
+                    </dl>
+                    <p class="resultado-aviso">Partida registrada no seu histórico.</p>
+                    <div class="resultado-botoes">
+                        <a class="btn-resultado btn-resultado-principal" id="btnJogarOutro" href="sudoku.html?nivel=facil">
+                            <i class="fa-solid fa-rotate"></i><span>Jogar outro</span>
+                        </a>
+                         <a class="btn-resultado btn-resultado-contorno" href="jogar.html">
+                            <i class="fa-solid fa-right-left"></i>Escolher nível
+                        </a>
+                    </div>
+                    <a class="resultado-link" href="painel.html">
+                        <i class="fa-solid fa-table-cells-large"></i>Ver meu desempenho
+                    </a>
+                </section>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
