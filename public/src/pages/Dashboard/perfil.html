@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="../../css/pages/dashboard/app.css">
     <link rel="stylesheet" href="../../css/pages/dashboard/sidebar.css">
+    <link rel="stylesheet" href="../../css/pages/dashboard/perfil/perfil.css">
 </head>
 <body>
     <div class="app">
@@ -28,13 +29,68 @@
             </div>
 
             <div class="sidebar-usuario">
-                <p class="usuario-nome" id="nomeUsuario">julio</p>
-                <p class="usuario-email" id="emailUsuario">julio229102@gmail.com</p>
+                <p class="usuario-nome" id="nomeUsuario">Einer</p>
+                <p class="usuario-email" id="emailUsuario">einer@gmail.com</p>
                 <button type="button" class="btn-sair" onclick="sair()">
                     <i class="fa-solid fa-right-from-bracket"></i>Sair
                 </button>
             </div>
         </aside>
+        <main class="conteudo">
+            <div class="pagina pagina-perfil">
+                <header>
+                    <span class="etiqueta">Perfil</span>
+                    <h1 class="pagina-titulo">Meu perfil</h1>
+                    <p class="pagina-subtitulo">Atualize o seu nome e veja os dados da sua conta</p>
+                </header>
+                <div class="perfil-lista">
+                    <section class="card perfil-topo">
+                        <span class="avatar" id="avatarPerfil">E</span>
+                        <div>
+                            <h2 class="perfil-nome" id="perfilNome">Einer</h2>
+                            <p class="perfil-email">
+                                <i class="fa-regular fa-envelope"></i>
+                                <span id="perfilEmail">einer@gmail.com</span>
+                            </p>
+                        </div>
+                    </section>
+                    <section class="card perfil-secao">
+                        <h2 class="secao-titulo">Nome de exibição</h2>
+                        <p class="secao-descricao">É assim que você aparece na plataforma.</p>
+                        <form onsubmit="salvarNome(); return false;">
+                            <label class="campo-rotulo" for="iptNome">Nome</label>
+                            <input class="campo-input" type="text" id="iptNome" value="Einer" autocomplete="name">
+                            <button type="submit" class="btn-salvar">Salvar</button>
+                            <p class="perfil-msg" id="msgNome" role="status"></p>
+                        </form>
+                    </section>
+                    <section class="card perfil-secao">
+                        <h2 class="secao-titulo">Conta</h2>
+                        <ul class="info-lista">
+                            <li class="info-linha">
+                                <span class="info-rotulo"><i class="fa-regular fa-envelope"></i>E-mail</span>
+                                <span class="info-valor" id="contaEmail">einer@gmail.com</span>
+                            </li>
+                            <li class="info-linha">
+                                <span class="info-rotulo"><i class="fa-regular fa-user"></i>Status de conta</span>
+                                <span class="info-valor" id="contaStatus">Ativo</span>
+                            </li>
+                            <li class="info-linha">
+                                <span class="info-rotulo"><i class="fa-regular fa-calendar"></i>Membro desde</span>
+                                <span class="info-valor" id="contaDesde">26 de outubro de 2026</span>
+                            </li>
+                        </ul> 
+                    </section>
+                    <section class="card perfil-secao">
+                        <h2 class="secao-titulo">Sessão</h2>
+                        <p class="secao-descricao">Você sai da plataforma nesta dispositivo e pode entrar novamente quando quiser.</p>
+                        <button type="button" class="btn-sair-conta" onclick="sair()">
+                            <i class="fa-solid fa-right-from-bracket"></i>Sair da conta
+                        </button>
+                    </section>
+                </div>
+            </div>
+        </main>
     </div>
 </body>
 </html>
