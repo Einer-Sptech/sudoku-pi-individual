@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../../css/pages/dashboard/app.css">
     <link rel="stylesheet" href="../../css/pages/dashboard/sidebar.css">
     <link rel="stylesheet" href="../../css/pages/dashboard/jogar/jogar.css">
+    <link rel="stylesheet" href="../../css/pages/dashboard/jogar/sudoku.css">
 </head>
 <body>
     <div class="app">
@@ -29,13 +30,387 @@
             </div>
 
             <div class="sidebar-usuario">
-                <p class="usuario-nome" id="nomeUsuario">julio</p>
-                <p class="usuario-email" id="emailUsuario">julio229102@gmail.com</p>
+                <p class="usuario-nome" id="nomeUsuario">Einer</p>
+                <p class="usuario-email" id="emailUsuario">einer@gmail.com</p>
                 <button type="button" class="btn-sair" onclick="sair()">
                     <i class="fa-solid fa-right-from-bracket"></i>Sair
                 </button>
             </div>
         </aside>
+        <main class="conteudo">
+            <div class="pagina pagina-sudoku">
+                <div class="jogo">
+                    <section class="jogo-area">
+                        <div id="tabuleiro"></div>
+                        <div id="digito"></div>
+                        <div class="acoes">
+                            <button onclick="apagarNumero()" type="button" class="btn-acao" id="btnApagar">
+                                <i class="fa-solid fa-delete-left"></i>Apagar
+                            </button>
+                            <button onclick="darDica()" type="button" class="btn-acao" id="btnDica">
+                                <i class="fa-regular fa-lightbulb"></i><span id="textoDica">Dica</span>
+                            </button>
+                        </div>
+                    </section>
+                    <aside class="painel-jogo">
+                        <dl class="painel-metricas">
+                            <div class="painel-metrica">
+                                <dt>Tempo</dt>
+                                <dd class="painel-tempo" id="tempo">00:00</dd>
+                            </div>
+                            <div class="painel-metrica">
+                                <dt>Nível</dt>
+                                <dd id="nivel">Fácil</dd>
+                            </div>
+                            <div class="painel-metrica">
+                                <dt>Erros</dt>
+                                <dd id="erros">0</dd>
+                            </div>
+                            <div class="painel-metrica">
+                                <dt>Dicas</dt>
+                                <dd id="dicas">0</dd>
+                            </div>
+                        </dl>
+                        <button onclick="desistirPartida()" type="button" class="btn-desistir" id="btnDesistir">Desistir da partida</button>
+                    </aside>
+                </div>
+            </div>
+        </main>
     </div>
 </body>
 </html>
+<script>
+    let solucaoBase = [
+        "387491625",
+        "241568379",
+        "569327418",
+        "758619234",
+        "123784596",
+        "496253187",
+        "934176852",
+        "675832941",
+        "812945763"
+    ];
+
+    // Variaveis de controle do jogo
+    let tabuleiroSolucao = [];
+    let tabuleiroAtual = [];
+    let celulasFixas = [];
+
+    let linhaSelecionada = -1;
+    let colunaSelecionada = -1;
+    let elementoHtmlSelecionado = null;
+
+    let quantidadeErros = 0;
+    let quantidadeDicas = 0;
+    let segundoDecorridos = 0;
+    let cronometro = null;
+    let jogoFinalizado = false;
+
+    let idNivelAtual = 1;
+    let nomeNivelTexto = "Fácil";
+    let quantidadeVazias = 40; //Nivel facil
+    let dataInicioPartida = new Date();
+
+    window.onload = function (){
+        iniciarJogo();
+    }
+
+    function iniciarJogo(){
+        let parametroUrl = new URLSearchParams(window.location.search);
+        let nivelUrl = parametroUrl.get("nivel");
+
+        if(nivelUrl === "medio"){
+            nomeNivelTexto = "Médio";
+            idNivelAtual = 2;
+            quantidadeVazias = 48;
+        }else if(nivelUrl === "dificil"){
+            nomeNivelTexto = "Difícil";
+            idNivelAtual = 3;
+            quantidadeVazias = 54;
+        }else if(nivelUrl === "especialista"){
+            nomeNivelTexto = "Especialista";
+            idNivelAtual = 4;
+            quantidadeVazias = 58;
+        }else{
+            nomeNivelTexto = "Fácil";
+            idNivelAtual = 1;
+            quantidadeVazias = 40;
+        }
+
+        document.getElementById("nivel").innerText = nomeNivelTexto;
+        dataInicioPartida = new Date();
+
+        montarTabuleiro();
+        criarBotoesDigitos();
+        criarGradeTebuleiro();
+
+        cronometro = setInterval(atualizarTempo, 1000);
+
+        document.getElementById("btnApagar").onclick = apagarNumero;
+        document.getElementById("btnDica").onclick = darDica;
+        document.getElementById("btnDesistir").onclick = desistirPartida;
+    
+        let linkJogarOutro = document.getElementById("btnJogarOutro");
+        if(linkJogarOutro) {
+            linkJogarOutro.href = `sudoku.html?nivel=${nivelUrl || 'facil'}`;
+        }
+    }
+
+    function montarTabuleiro(){
+        tabuleiroSolucao = [];
+        tabuleiroAtual = [];
+        celulasFixas = [];
+
+        for(let r = 0; r < 9; r++){
+            tabuleiroSolucao[r] = [];
+            tabuleiroAtual[r] = [];
+            celulasFixas[r] = [];
+
+            for(let c = 0; c < 9; c++){
+                let numero = parseInt(solucaoBase[r][c]);
+                tabuleiroSolucao[r][c] = numero;
+                tabuleiroAtual[r][c] = numero;
+                celulasFixas[r][c] = true;
+            }
+        }
+
+        //Sorteia posiçoes para apagar com base na dificuldade
+        let posicoes = [];
+        for(let i = 0; i < 81; i++){
+            posicoes.push(i);
+        }
+        posicoes.sort(() => Math.random() - 0.5); // embaralha as posiçoes aleatoriamente
+
+        //Posiçoes sorteadas em espaço vazio
+        for(let i = 0; i < quantidadeVazias; i++){
+            let r = Math.floor(posicoes[i] / 9);
+            let c = posicoes[i] % 9;
+            tabuleiroAtual[r][c] = 0;
+            celulasFixas[r][c] = false;
+        }
+    }
+
+    //Cria botoes de 1 a 9 
+    function criarBotoesDigitos(){
+        let containerDigito = document.getElementById("digito");
+        containerDigito.innerHTML = "";
+
+        for(let i = 1; i <= 9; i++){
+            let botao = document.createElement("button");
+            botao.type = "button";
+            botao.innerText = i;
+            botao.className = "number";
+            botao.id = `digito-${i}`
+            botao.onclick = function(){
+                inserirNumero(i);
+            };
+            containerDigito.appendChild(botao);
+        }
+    }
+
+    function criarGradeTebuleiro(){
+        let containerTabuleiro = document.getElementById("tabuleiro");
+        containerTabuleiro.innerHTML = "";
+
+        for(let r = 0; r < 9; r++){
+            for(let c = 0; c < 9; c++){
+                let bloco = document.createElement("div")
+                bloco.id = `bloco-${r}-${c}`;
+                bloco.className = "bloco";
+                bloco.addEventListener("click", function(){
+                    selecionarBloco(r, c, bloco);
+                });
+                containerTabuleiro.appendChild(bloco);
+            }
+        }
+
+        atualizarVisualTela();
+    }
+
+    //Interação com o jogador
+    function selecionarBloco(r, c, elemento) {
+        if(jogoFinalizado) return;
+
+        if(elementoHtmlSelecionado){
+            elementoHtmlSelecionado.classList.remove("bloco-selected");
+        }
+
+        elementoHtmlSelecionado = elemento;
+        linhaSelecionada = r;
+        colunaSelecionada = c;
+
+        atualizarVisualTela();
+    }
+
+    function inserirNumero(numero) {
+        if(jogoFinalizado) return;
+        if(linhaSelecionada === -1 || colunaSelecionada === -1) return;
+        if(celulasFixas[linhaSelecionada][colunaSelecionada]) return;
+
+        tabuleiroAtual[linhaSelecionada][colunaSelecionada] = numero;
+        if(temConflito(linhaSelecionada, colunaSelecionada, numero)){
+            quantidadeErros++;
+            document.getElementById("erros").innerText = quantidadeErros;
+        }
+
+        atualizarVisualTela();
+        verificarVitoria();
+    }
+
+    function apagarNumero() {
+        if(jogoFinalizado) return;
+        if(linhaSelecionada === -1 || colunaSelecionada === -1) return;
+        if(celulasFixas[linhaSelecionada][colunaSelecionada]) return;
+
+        tabuleiroAtual[linhaSelecionada][colunaSelecionada] = 0;
+        atualizarVisualTela();
+    }
+
+    function temConflito(r, c, num) {
+        if(num === 0) return false;
+
+        for(let i = 0; i < 9; i++){
+            if(i !== c && tabuleiroAtual[r][i] === num) return true;
+            if(i !== r && tabuleiroAtual[i][c] === num) return true;
+        }
+
+        let inicioR = Math.floor(r / 3) * 3;
+        let inicioC = Math.floor(c / 3) * 3;
+
+        for(let i = inicioR; i < inicioR + 3; i++){
+            for(let j = inicioC; j < inicioC + 3; j++){
+                if((i !== r || j !== c) && tabuleiroAtual[i][j] === num){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    function atualizarVisualTela() {
+        let contadorNumeros = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        for(let r = 0; r < 9; r++){
+            for(let c = 0; c < 9; c++){
+                let bloco = document.getElementById(`bloco-${r}-${c}`);
+                let valor = tabuleiroAtual[r][c];
+
+                bloco.innerText = valor === 0 ? "" : valor;
+                if(valor > 0) contadorNumeros[valor]++;
+
+                let classeCss = "bloco";
+                if(celulasFixas[r][c]){
+                    classeCss += " bloco-start";
+                }else if(valor !== 0 && temConflito(r, c, valor)){
+                    classeCss += " bloco-error";
+                }
+
+                if(bloco === elementoHtmlSelecionado){
+                    classeCss += " bloco-selected";
+                }
+
+                bloco.className = classeCss;
+            }
+        }
+
+        //desativa botoes
+        for(let i = 0; i <= 9; i++){
+            let btnDigito = document.getElementById(`digito-${i}`);
+            if(btnDigito){
+                btnDigito.disabled = contadorNumeros[i] >= 9;
+            }
+        }
+    }
+
+    // Dica
+    function darDica(){
+        if(jogoFinalizado) return;
+
+        let candidatas = [];
+        for(let r = 0; r < 9; r++){
+            for(let c = 0; c < 9; c++){
+                if(!celulasFixas[r][c] && tabuleiroAtual[r][c] !== tabuleiroSolucao[r][c]) {
+                    candidatas.push({r,c});
+                }
+            }
+        }
+
+        if(candidatas.length === 0) return;
+
+        let alvo = candidatas[Math.floor(Math.random() * candidatas.length)];
+        if(linhaSelecionada !== -1 && colunaSelecionada !== -1 && !celulasFixas[linhaSelecionada][colunaSelecionada] && tabuleiroAtual[linhaSelecionada][colunaSelecionada] !== tabuleiroSolucao[linhaSelecionada][colunaSelecionada]){
+            alvo = { r: linhaSelecionada, c: colunaSelecionada};
+        }
+
+        tabuleiroAtual[alvo.r][alvo.c] = tabuleiroSolucao[alvo.r][alvo.c];
+        celulasFixas[alvo.r][alvo.c] = true;
+
+        let blocoDica = document.getElementById(`bloco-${alvo.r}-${alvo.c}`);
+        if(blocoDica) blocoDica.classList.add("bloco-hint");
+
+        quantidadeDicas++;
+        document.getElementById("dicas").innerText = quantidadeDicas;
+
+        atualizarVisualTela();
+        verificarVitoria();
+    }
+
+    function atualizarTempo(){
+        segundoDecorridos++;
+        let min = Math.floor(segundoDecorridos / 60);
+        let seg = segundoDecorridos % 60;
+        document.getElementById("tempo").innerText = `${min < 10 ? "0" + min : min}:${seg < 10 ? "0" + seg : seg}`;
+    }
+
+    function verificarVitoria(){
+        for(let r = 0; r < 9; r++){
+            for(let c = 0; c < 9; c++){
+                if(tabuleiroAtual[r][c] === 0 || temConflito(r, c, tabuleiroAtual[r][c])){
+                    return;
+                }
+            }
+        }
+
+        jogoFinalizado = true;
+        clearInterval(cronometro);
+        finalizarEnviarPartida(1);
+    }
+
+    function desistirPartida(){
+        if(confirm("Deseja realmente desistir da partida?")){
+            jogoFinalizado = true;
+            clearInterval(cronometro);
+            finalizarEnviarPartida(2);
+        }
+    }
+
+    function finalizarEnviarPartida(statusId){
+        let tempoFormatado = document.getElementById("tempo"). innerText;
+
+        sessionStorage.setItem("RES_TEMPO", tempoFormatado);
+        sessionStorage.setItem("RES_NIVEL", nomeNivelTexto);
+        sessionStorage.setItem("RES_ERROS", quantidadeErros);
+        sessionStorage.setItem("RES_DICAS", quantidadeDicas);
+
+        let dadosPartidaParaBackend = {
+            fkUsuario: sessionStorage.ID_USUARIO || 1, // Exemplo mockado
+            fkNivel: idNivelAtual,                     // 1, 2, 3 ou 4
+            fkStatus: statusId,                        // 1 = Vitória, 2 = Abandonada
+            tempoSeg: segundosDecorridos,
+            erros: quantidadeErros,
+            dicas: quantidadeDicas,
+            dtInicio: dataInicioPartida.toISOString().slice(0, 19).replace('T', ' ')
+        };
+
+        console.log("🎮 [MOCK BACK-END] Dados prontos para inserir na tabela 'partidas':", dadosPartidaParaBackend);
+
+        if (statusId === 1) {
+            // Se venceu, vai para a tela de resultado
+            window.location.href = "public/src/pages/Dashboard/resultado.html";
+        } else {
+            // Se desistiu, volta para a tela de escolher nível
+            window.location.href = "public/src/pages/Dashboard/jogar.html";
+        }
+    }
+</script>
