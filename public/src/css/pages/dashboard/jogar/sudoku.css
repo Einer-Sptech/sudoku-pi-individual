@@ -1,0 +1,213 @@
+.pagina-sudoku {
+    --largura-pagina: 1024px;
+    display: flex;
+    align-items: center;
+    min-height: calc(100vh - 80px);
+}
+
+.jogo {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 40px;
+    width: 100%;
+}
+
+.jogo-area {
+    width: 460px;
+    flex-shrink: 0;
+}
+
+#tabuleiro {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    width: 100%;
+    aspect-ratio: 1;
+    background: #fff;
+    border: 3px solid var(--azul);
+
+}
+
+.bloco {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid var(--borda);
+    border-bottom: 1px solid var(--borda);
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--azul);
+    cursor: pointer;
+    user-select: none;
+}
+
+.bloco:nth-child(3n):not(:nth-child(9n)) { 
+    border-right: 2px solid var(--azul);
+}
+
+.bloco:nth-child(n+19):nth-child(-n+27),
+
+.bloco:nth-child(n+46):nth-child(-n+54) { 
+    border-bottom: 2px solid var(--azul);
+}
+
+.bloco:nth-child(9n) { 
+    border-right: 0;
+}
+
+.bloco:nth-child(n+73) { 
+    border-bottom: 0;
+}
+
+.bloco-start {
+    background: #F3F2EE;
+    color: var(--texto);
+}
+
+.bloco-hint {
+    background: #FFF6D6;
+    color: #8A6A00;
+}
+
+.bloco-same {
+    background: rgba(54, 76, 99, 0.15);
+}
+
+.bloco-selected {
+    background: rgba(54, 76, 99, 0.30);
+}
+
+.bloco-error {
+    background: #FDECEC;
+    color: #D94343;
+}
+
+.bloco-error.bloco-selected {
+    background: #F8CFCF;
+}
+
+#digito {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.number {
+    aspect-ratio: 1;
+    background: #fff;
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+    font-family: var(--font-primary);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--texto);
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.number:hover:not(:disabled) {
+    background: var(--fundo);
+}
+
+.number:disabled {
+    background: var(--fundo);
+    color: var(--texto-suave);
+    opacity: 0.45;
+    text-decoration: line-through;
+    cursor: not-allowed;
+}
+
+.acoes {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.btn-acao {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 44px;
+    background: #fff;
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+    font-size: 14px;
+    color: var(--texto);
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-acao i {
+    font-size: 16px;
+}
+
+.btn-acao:hover:not(:disabled) {
+    background: var(--fundo);
+}
+
+.btn-acao:disabled {
+    background: var(--fundo);
+    color: var(--texto-suave);
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.painel-jogo {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 256px;
+    flex-shrink: 0;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid var(--borda);
+    border-radius: 16px;
+}
+ 
+.painel-metricas {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+ 
+.painel-metrica dt {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--texto-suave);
+}
+ 
+.painel-metrica dd {
+    margin-top: 4px;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--texto);
+}
+ 
+.painel-metrica dd.painel-tempo {
+    font-family: var(--font-primary);
+    font-size: 30px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.2;
+    color: var(--azul);
+}
+ 
+.btn-desistir {
+    height: 38px;
+    margin-top: 20px;
+    background: #fff;
+    border: 1px solid rgba(217, 67, 67, 0.35);
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #D94343;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+ 
+.btn-desistir:hover { background: #FDECEC; }
