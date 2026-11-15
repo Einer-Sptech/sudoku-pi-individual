@@ -27,8 +27,8 @@
                 </nav>
             </div>
             <div class="sidebar-usuario">
-                <p class="usuario-nome" id="nomeUsuario">Einer</p>
-                <p class="usuario-email" id="emailUsuario">einer@gmail.com</p>
+                <p class="usuario-nome" id="nomeUsuario"></p>
+                <p class="usuario-email" id="emailUsuario"></p>
                 <button type="button" class="btn-sair" onclick="sair()">
                     <i class="fa-solid fa-right-from-bracket"></i>Sair
                 </button>
@@ -38,7 +38,7 @@
             <div class="pagina">
                 <header>
                     <span class="etiqueta">Início</span>
-                    <h1 class="pagina-titulo">Olá, <span id="nomeSaudacao">Einer</span></h1>
+                    <h1 class="pagina-titulo">Olá, <span id="nomeSaudacao"></span></h1>
                     <p class="pagina-subtitulo">Escolha um nível, jogue uma partida e acompanhe o seu progresso no painel.</p>
                 </header>
                 <section class="acoes">
@@ -61,24 +61,24 @@
                                 <span class="kpi-rotulo">Partidas iniciadas</span>
                                 <span class="kpi-icone"><i class="fa-solid fa-gamepad"></i></span>
                             </div>
-                            <p class="kpi-valor" id="kpiPartidas">2</p>
-                            <p class="kpi-dica" id="kpiVitorias">1 vitórias</p>
+                            <p class="kpi-valor" id="kpiPartidas">0</p>
+                            <p class="kpi-dica" id="kpiVitoriasDica">0 vitórias</p>
                         </div>
                         <div class="card kpi">
                             <div class="kpi-topo">
                                 <span class="kpi-rotulo">Taxa de vitória</span>
                                 <span class="kpi-icone"><i class="fa-solid fa-trophy"></i></span>
                             </div>
-                            <p class="kpi-valor" id="kpiPartidas">50%</p>
-                            <p class="kpi-dica" id="kpiVitorias">1 de 2 partidas</p>
+                            <p class="kpi-valor" id="kpiTaxa">0%</p>
+                            <p class="kpi-dica" id="kpiTaxaDica">0 partidas</p>
                         </div>
                         <div class="card kpi">
                             <div class="kpi-topo">
-                                <span class="kpi-rotulo">Sequência atual</span>
-                                <span class="kpi-icone"><i class="fa-solid fa-fire"></i></span>
+                                <span class="kpi-rotulo">Menor tempo</span>
+                                <span class="kpi-icone"><i class="fa-solid fa-clock"></i></span>
                             </div>
-                            <p class="kpi-valor" id="kpiPartidas">1</p>
-                            <p class="kpi-dica" id="kpiVitorias">Recorde: 1 vitória seguida</p>
+                            <p class="kpi-valor" id="kpiTempo">--:--</p>
+                            <p class="kpi-dica">Vitória mais rápida</p>
                         </div>
                     </div>
                 </section>
@@ -87,3 +87,84 @@
     </div>
 </body>
 </html>
+<script>
+    function validarSessao() {
+        let idUsuario = sessionStorage.ID_USUARIO;
+        let nomeUsuario = sessionStorage.NOME_USUARIO;
+        let emailUsuario = sessionStorage.EMAIL_USUARIO;
+
+        if(idUsuario == undefined) {
+            window.location = "../../login.html";
+            return;
+        }
+        nomeUsuario.innerHTML = nomeUsuario;
+        if(document.getElementById("nomeUsuario")){
+            document.getElementById("nomeUsuario").innerHTML = nomeUsuario;
+        }
+        if(document.getElementById("emailUsuario")){
+            document.getElementById("emailUsuario").innerHTML = emailUsuario;
+        }
+        if(document.getElementById("nomeSaudacao")){
+            document.getElementById("nomeSaudacao").innerHTML = nomeUsuario;
+        }
+
+        buscarEstatisticas(idUsuario);
+    }
+
+    function buscarEstatisticas(idUsuario){
+        fetch(`/partidas/listar/${idUsuario}`) 
+       .then(function (resposta) {
+            if(resposta.ok){
+                resposta.json().then(function (listaPartidas) {
+                    console.log("Estatisticas recebidas:", listaPartidas);
+
+                    let totalPartidas = listaPartidas.length;
+                    let totalVitorias = 0;
+                    let menorTempoSeg = null;
+
+                    for (let i = 0; i < listaPartidas.length; i++) {
+                        let partida = listaPartidas[i];
+                        if (partida.status === 'Vitória') {
+                            totalVitorias++;
+
+                            if (menorTempoSeg === null || partida.tempo_seg < menorTempoSeg) {
+                                menorTempoSeg = partida.tempo_seg;
+                            }
+                        }
+                    }
+
+                    let taxaVitoria = 0;
+                    if(totalPartidas > 0){
+                        taxaVitoria = ((totalVitorias / totalPartidas) * 100).toFixed(0);
+                    }
+
+                    let menorTempoFormatado = "--:--";
+                    if(menorTempoSeg != null) {
+                        let minutos = Math.floor(menorTempoSeg / 60);
+                        let segundos = menorTempoSeg % 60;
+                        menorTempoFormatado = `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+                    }
+
+                    document.getElementById("kpiPartidas").innerHTML = totalPartidas;
+                    document.getElementById("kpiVitoriasDica").innerHTML = `${totalVitorias} vitórias`;
+                    document.getElementById("kpiTaxa").innerHTML = `${taxaVitoria}%`;
+                    document.getElementById("kpiTaxaDica").innerHTML = `${totalVitorias} de ${totalPartidas} partidas`;
+                    document.getElementById("kpiTempo").innerHTML = menorTempoFormatado;
+                    
+                });  
+            }else{
+                console.error("Erro ao buscar estatísticas");
+            }
+        })
+        .catch(function(erro){
+            console.error("Erro na requisição:", erro);
+        });
+    }
+
+    validarSessao();
+
+    function sair() {
+        sessionStorage.clear();
+        window.location = "/index.html"
+    }
+</script>

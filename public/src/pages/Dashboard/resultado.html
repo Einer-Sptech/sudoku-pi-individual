@@ -29,8 +29,8 @@
             </div>
 
             <div class="sidebar-usuario">
-                <p class="usuario-nome" id="nomeUsuario">Einer</p>
-                <p class="usuario-email" id="emailUsuario">einer@gmail.com</p>
+                <p class="usuario-nome" id="nomeUsuario"></p>
+                <p class="usuario-email" id="emailUsuario"></p>
                 <button type="button" class="btn-sair" onclick="sair()">
                     <i class="fa-solid fa-right-from-bracket"></i>Sair
                 </button>
@@ -78,3 +78,67 @@
     </div>
 </body>
 </html>
+<script>
+    function carregarResultado(){
+        let idUsuario = sessionStorage.ID_USUARIO;
+        let nomeUsuario = sessionStorage.NOME_USUARIO;
+        let emailUsuario = sessionStorage.EMAIL_USUARIO;
+
+        if(idUsuario == undefined){
+            window.location = "../login.html";
+            return;
+        }
+
+        if(document.getElementById("nomeUsuario")){
+            document.getElementById("nomeUsuario").innerHTML = nomeUsuario;
+        }
+        if (document.getElementById("emailUsuario")) {
+            document.getElementById("emailUsuario").innerHTML = emailUsuario;
+        }
+
+        let tempo = sessionStorage.getItem("RES_TEMPO");
+        let nivel = sessionStorage.getItem("RES_NIVEL");
+        let erros = sessionStorage.getItem("RES_ERROS");
+        let dicas = sessionStorage.getItem("RES_DICAS");
+
+        if(tempo != null){
+            document.getElementById("resTempo").innerHTML = tempo;
+        }
+        if(nivel != null){
+            document.getElementById("resNivel").innerHTML = nivel;
+        }
+        if(erros != null){
+            document.getElementById("resErros").innerHTML = erros;
+        }
+        if(dicas != null){
+            document.getElementById("resDicas").innerHTML = dicas;
+        }
+
+        configurarBotaoJogar(nivel);
+    }
+
+    function configurarBotaoJogar(nivel){
+        let jogarOutro = document.getElementById("btnJogarOutro");
+
+        if(jogarOutro != null && nivel != null){
+            let nivelParam = 'facil';
+
+            if(nivel === "Médio"){
+                nivelParam = "medio";
+            }else if(nivel === "Difícil"){
+                nivelParam = "dificil";
+            }else if(nivelParam == "Especialista"){
+                nivelParam = 'especialista';
+            }
+
+            jogarOutro.href = "sudoku.html?nivel=" + nivelParam;
+        }
+    }
+
+    carregarResultado();
+
+    function sair() {
+        sessionStorage.clear();
+        window.location = "/index.html";
+    }
+</script>

@@ -73,20 +73,13 @@
                             </li>
                             <li class="info-linha">
                                 <span class="info-rotulo"><i class="fa-regular fa-user"></i>Status de conta</span>
-                                <span class="info-valor" id="contaStatus">Ativo</span>
+                                <span class="info-valor" id="contaStatus"></span>
                             </li>
                             <li class="info-linha">
                                 <span class="info-rotulo"><i class="fa-regular fa-calendar"></i>Membro desde</span>
-                                <span class="info-valor" id="contaDesde">26 de outubro de 2026</span>
+                                <span class="info-valor" id="contaDesde"></span>
                             </li>
                         </ul> 
-                    </section>
-                    <section class="card perfil-secao">
-                        <h2 class="secao-titulo">Sessão</h2>
-                        <p class="secao-descricao">Você sai da plataforma nesta dispositivo e pode entrar novamente quando quiser.</p>
-                        <button type="button" class="btn-sair-conta" onclick="sair()">
-                            <i class="fa-solid fa-right-from-bracket"></i>Sair da conta
-                        </button>
                     </section>
                 </div>
             </div>
@@ -94,3 +87,114 @@
     </div>
 </body>
 </html>
+<script>
+    function validarSessao(){
+        let idUsuario = sessionStorage.ID_USUARIO;
+        let nomeUsuario = sessionStorage.NOME_USUARIO;
+        let emailUsuario = sessionStorage.EMAIL_USUARIO;
+        let ativoUsuario = sessionStorage.ATIVO;
+        let dtCriacao = sessionStorage.DT_CRIACAO;
+
+        if (idUsuario == undefined) {
+            window.location = "../login.html";
+            return;
+        }
+
+        if (document.getElementById("nomeUsuario")) {
+            document.getElementById("nomeUsuario").innerHTML = nomeUsuario;
+        }
+        if (document.getElementById("emailUsuario")) {
+            document.getElementById("emailUsuario").innerHTML = emailUsuario;
+        }
+        if (document.getElementById("perfilNome")) {
+            document.getElementById("perfilNome").innerHTML = nomeUsuario;
+        }
+        if (document.getElementById("perfilEmail")) {
+            document.getElementById("perfilEmail").innerHTML = emailUsuario;
+        }
+        if (document.getElementById("contaEmail")) {
+            document.getElementById("contaEmail").innerHTML = emailUsuario;
+        }
+        if (document.getElementById("iptNome")) {
+            document.getElementById("iptNome").value = nomeUsuario;
+        }
+        if (document.getElementById("avatarPerfil")) {
+            if(nomeUsuario){
+                document.getElementById("avatarPerfil").innerHTML = nomeUsuario.charAt(0).toUpperCase();
+            }
+        }
+
+        if(document.getElementById("contaStatus")){
+            if(ativoUsuario == 1){
+                document.getElementById("contaStatus").innerHTML = "Ativo";
+            }else{
+                document.getElementById("contaStatus").innerHTML = "Inativo";
+            }
+        }
+
+        if (document.getElementById("contaDesde")) {
+            if (dtCriacao !== undefined && dtCriacao !== null && dtCriacao !== "") {
+                let dataObj = new Date(dtCriacao);
+                let dia = dataObj.getDate();
+                let ano = dataObj.getFullYear();
+                let mesNome = dataObj.toLocaleString('pt-BR', { month: 'long' });
+
+                document.getElementById("contaDesde").innerHTML = dia + " de " + mesNome + " de " + ano;
+            } else {
+                document.getElementById("contaDesde").innerHTML = "Data indisponível";
+            }
+        }
+    }
+
+    function salvarNome(){
+        let idUsuario = sessionStorage.ID_USUARIO;
+        let novoNome = document.getElementById("iptNome").value.trim();
+        let msgNome = document.getElementById("msgNome");
+
+        if(novoNome === ""){
+            msgNome.innerHTML = "O nome não pode ficar em branco.";
+            msgNome.className = "perfil-msg erro";
+            return;
+        }
+
+        fetch(`/usuarios/atualizar/${idUsuario}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                nomeServer: novoNome
+            })
+        })
+        .then(function (resposta){
+            if(resposta.ok){
+                sessionStorage.NOME_USUARIO = novoNome;
+
+                msgNome.innerHTML = "Nome atualizado com sucesso!";
+                msgNome.className = "perfil-msg sucesso";
+
+                document.getElementById("perfilNome").innerHTML = novoNome;
+                document.getElementById("nomeUsuario").innerHTML = novoNome;
+
+                setTimeout(function (){
+                    msgNome.innerHTML = "";
+                }, 3000);
+            }else{
+                msgNome.innerHTML = "Erro ao atualizar o nome.";
+                msgNome.className = "perfil-msg erro";
+            }
+        })
+        .catch(function (erro){
+            console.error("Erro na requisição:", erro);
+            msgNome.innerHTML = "Erro de conexão com o servidor.";
+            msgNome.className = "perfil-msg erro";
+        });
+    }
+
+    validarSessao();
+
+    function sair() {
+        sessionStorage.clear();
+        window.location = "/index.html";
+    }
+</script>

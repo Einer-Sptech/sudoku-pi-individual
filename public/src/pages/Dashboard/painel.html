@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../../css/pages/dashboard/app.css">
     <link rel="stylesheet" href="../../css/pages/dashboard/sidebar.css">
     <link rel="stylesheet" href="../../css/pages/dashboard/painel/painel.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="app">
@@ -29,8 +30,8 @@
             </div>
 
             <div class="sidebar-usuario">
-                <p class="usuario-nome" id="nomeUsuario">Einer</p>
-                <p class="usuario-email" id="emailUsuario">einer@gmail.com</p>
+                <p class="usuario-nome" id="nomeUsuario"></p>
+                <p class="usuario-email" id="emailUsuario"></p>
                 <button type="button" class="btn-sair" onclick="sair()">
                     <i class="fa-solid fa-right-from-bracket"></i>Sair
                 </button>
@@ -50,7 +51,7 @@
                             <span class="kpi-icone"><i class="fa-solid fa-gamepad"></i></span>
                         </div>
                         <p class="kpi-valor" id="kpiPartidas">2</p>
-                        <p class="kpi-dica" id="kpiNaoConcluidas">1 não concluídas</p>
+                        <p class="kpi-dica" id="kpiNaoConcluida">1 não concluídas</p>
                     </div>
                     <div class="card kpi">
                         <div class="kpi-topo">
@@ -65,7 +66,7 @@
                             <span class="kpi-rotulo">Melhor tempo</span>
                             <span class="kpi-icone"><i class="fa-solid fa-hourglass-half"></i></span>
                         </div>
-                        <p class="kpi-valor" id="kpiMelhorTempo">06:34</p>
+                        <p class="kpi-valor" id="kpiTempo">06:34</p>
                         <p class="kpi-dica">Partida mais rápida</p>
                     </div>
                     <div class="card kpi">
@@ -80,29 +81,58 @@
                 <section class="painel-linha">
                     <div class="card card-partidas">
                         <h2 class="partidas-titulo">Últimas partidas</h2>
-                        <ul class="partidas-lista" id="listaPartidas">
-                            <li class="partida">
-                                <div class="partida-topo">
-                                    <span class="selo selo-vitoria">Vitória</span>
-                                    <span class="partida-nivel">Fácil</span>
-                                </div>
-                                <div class="partida-info">
-                                    <span class="partida-tempo">06:34</span>
-                                    <span class="partida-data">05 de nov., 18:21</span>
-                                </div>
-                            </li>
-                            <li class="partida">
-                                <div class="partida-topo">
-                                    <span class="selo selo-nao-concluido">Não concluído</span>
-                                    <span class="partida-nivel">Especialista</span>
-                                </div>
-                                <div class="partida-info">
-                                    <span class="partida-tempo">00:37</span>
-                                    <span class="partida-data">26 de out., 17:28</span>
-                                </div>
-                            </li>
-                        </ul>
+                        <p class="grafico-legenda">Histórico das suas 15 partidas mais recentes</p> 
+                        <div class="partidas-rolagem">
+                            <ul class="partidas-lista" id="listaPartidas">
+                                <li class="partida">
+                                    <div class="partida-topo">
+                                        <span class="selo selo-vitoria"></span>
+                                        <span class="partida-nivel"></span>
+                                    </div>
+                                    <div class="partida-info">
+                                        <span class="partida-tempo"></span>
+                                        <span class="partida-data"></span>
+                                    </div>
+                                </li>
+                                <li class="partida">
+                                    <div class="partida-topo">
+                                        <span class="selo selo-nao-concluido"></span>
+                                        <span class="partida-nivel"></span>
+                                    </div>
+                                    <div class="partida-info">
+                                        <span class="partida-tempo"></span>
+                                        <span class="partida-data"></span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
                         <p class="partidas-vazio" id="semPartidas" hidden>Você ainda não jogou nenhuma partida.</p>
+                    </div>
+                    <div class="card card-grafico">
+                        <h2 class="grafico-titulo">Evolução do tempo</h2>
+                        <p class="grafico-legenda">Tempo das suas 10 últimas vitórias (menor é melhor)</p>
+                        <div class="grafico-area">
+                            <canvas id="graficoEvolucao" role="img" aria-label="Gráfico de linha com o tempo das últimas vitórias"></canvas>
+                        </div>
+                        <p class="grafico-vazio" id="vazioEvolucao" hidden>Vença algumas partidas para ver sua evolução.</p>
+                    </div>
+                </section>
+                <section class="painel-linha painel-linha-2">
+                    <div class="card card-grafico">
+                        <h2 class="grafico-titulo">Partidas por nível</h2>
+                        <p class="grafico-legenda">Quantas vezes você jogou cada nível</p>
+                        <div class="grafico-area">
+                            <canvas id="graficoNiveis" role="img" aria-label="Gráfico de barras com as partidas por nivel"></canvas>
+                        </div>
+                        <p class="grafico-vazio" id="vazioNiveis" hidden>Jogue algumas partidas para ver este gráfico.</p>
+                    </div>
+                    <div class="card card-grafico">
+                        <h2 class="grafico-titulo">Vitórias e abandonos</h2>
+                        <p class="grafico-legenda">Como terminaram as suas partidas</p>
+                        <div class="grafico-area">
+                            <canvas id="graficoStatus" role="img" aria-label="Gráfico de rosca com vitórias e partidas abandonadas"></canvas>
+                        </div>
+                        <p class="grafico-vazio" id="vazioStatus" hidden>Jogue algumas partidas para ver este gráfico.</p>
                     </div>
                 </section>
             </div>
@@ -110,3 +140,448 @@
     </div>
 </body>
 </html>
+<script>
+    let graficosPainel = [];
+
+    function validarSessao() {
+        let idUsuario = sessionStorage.ID_USUARIO;
+        let nomeUsuario = sessionStorage.NOME_USUARIO;
+        let emailUsuario = sessionStorage.EMAIL_USUARIO;
+
+        if (idUsuario == undefined) {
+            window.location = "../../login.html";
+            return;
+        }
+
+        if (document.getElementById("nomeUsuario")) {
+            document.getElementById("nomeUsuario").innerHTML = nomeUsuario;
+        }
+        if (document.getElementById("emailUsuario")) {
+            document.getElementById("emailUsuario").innerHTML = emailUsuario;
+        }
+        if (document.getElementById("nomeSubtitulo")) {
+            document.getElementById("nomeSubtitulo").innerHTML = nomeUsuario;
+        }
+
+        buscarPartidasPainel(idUsuario);
+    }
+
+    function buscarPartidasPainel(idUsuario) {
+        fetch(`/partidas/listar/${idUsuario}`)
+        .then(function (resposta) {
+            if (resposta.ok) {
+                resposta.json().then(function (listaPartidas) {
+                    console.log("Partidas para o painel:", listaPartidas);
+                    processarPainel(listaPartidas);
+                });
+            } else {
+                console.error("Erro ao buscar partidas para o painel.");
+            }
+        })
+        .catch(function (erro) {
+            console.error("Erro na requisição:", erro);
+        });
+    }
+
+    function processarPainel(listaPartidas){
+        let totalPartidas = listaPartidas.length;
+        let totalVitorias = 0;
+        let totalNaoConcluidas = 0;
+        let menorTempoSeg = null;
+
+        let sequenciaAtual = 0;
+        let sequenciaMaxima = 0;
+
+        let partidasCronologicas = listaPartidas.slice().sort(function(a, b) {
+            let dataA = 0;
+            if(a.dt_inicio != null){
+                dataA = new Date(a.dt_inicio);
+            }
+
+            let dataB = 0;
+            if(b.dt_inicio != null){
+                dataB = new Date(b.dt_inicio);
+            }
+
+            return(dataA - dataB);
+        });
+
+        for(let i = 0; i < partidasCronologicas.length; i++){
+            let partida = partidasCronologicas[i];
+
+            if(partida.status === 'Vitória' || partida.status === 1){
+                totalVitorias++;
+                sequenciaAtual++;
+
+                if(sequenciaAtual > sequenciaMaxima){
+                    sequenciaMaxima = sequenciaAtual;
+                }
+
+                if(menorTempoSeg === null){
+                    menorTempoSeg = partida.tempo_seg;
+                }else{
+                    if(partida.tempo_seg < menorTempoSeg){
+                        menorTempoSeg = partida.tempo_seg;
+                    }
+                }
+            }else{
+                totalNaoConcluidas++;
+                sequenciaAtual = 0; 
+            }
+        }
+
+        let taxaVitoria = 0;
+        if(totalPartidas > 0){
+            taxaVitoria = ((totalVitorias / totalPartidas) * 100).toFixed(0);
+        }
+
+        let menorTempoFormatado = "--:--";
+        if(menorTempoSeg !== null){
+            let min = Math.floor(menorTempoSeg / 60);
+            let seg = menorTempoSeg % 60;
+
+            let minStr = min;
+            if(min < 10) {
+                minStr = "0" + min;
+            }
+
+            let segStr = seg;
+            if(seg < 10){
+                segStr = "0" + seg;
+            }
+
+            menorTempoFormatado = minStr + ":" + segStr;
+        }
+
+        document.getElementById("kpiPartidas").innerHTML = totalPartidas;
+        document.getElementById("kpiNaoConcluida").innerHTML = totalNaoConcluidas + " não concluídas";
+        document.getElementById("kpiTaxa").innerHTML = taxaVitoria + "%";
+        document.getElementById("kpiTaxaDica").innerHTML = totalVitorias + " de " + totalPartidas + " partidas";
+        document.getElementById("kpiTempo").innerHTML = menorTempoFormatado;
+        document.getElementById("kpiSequenciaMax").innerHTML = sequenciaMaxima;
+
+        preencherListaPartidas(listaPartidas);
+
+        gerarGrafico(listaPartidas);
+    }
+
+    function preencherListaPartidas(listaPartidas){
+        let listaHtml = document.getElementById("listaPartidas");
+        let semPartidas = document.getElementById("semPartidas");
+
+        listaHtml.innerHTML = "";
+        if(listaPartidas.length === 0){
+            semPartidas.hidden = false;
+            return;
+        }else{
+            semPartidas.hidden = true;
+        }
+
+        let partidasOrdenadas = listaPartidas.slice().sort(function(a,b){
+            let dataA = 0;
+            if(a.dt_inicio != null){
+                dataA = new Date(a.dt_inicio);
+            }
+
+            let dataB = 0;
+            if(b.dt_inicio != null){
+                dataB = new Date(b.dt_inicio);
+            }
+
+            return(dataB - dataA)
+        });
+
+        if(partidasOrdenadas.length > 15){
+            partidasOrdenadas = partidasOrdenadas.slice(0,15);
+        }
+
+        for(let i = 0; i < partidasOrdenadas.length; i++){
+            let partida = partidasOrdenadas[i];
+
+            let nomeStatus = "Não concluído";
+            let classeSelo = "selo-nao-concluido";
+            if(partida.status === 'Vitória' || partida.status === 1){
+                nomeStatus = "Vitória";
+                classeSelo = "selo-vitoria";
+            }
+
+            let tempoSeg = 0;
+            if(partida.tempo_seg != null){
+                tempoSeg = partida.tempo_seg;
+            }
+
+            let min = Math.floor(tempoSeg / 60);
+            let seg = tempoSeg % 60;
+
+            let minStr = min;
+            if(min < 10){
+                minStr = "0" + min;
+            }
+
+            let segStr = seg;
+            if(seg < 10){
+                segStr = "0" + seg;
+            }
+
+            let tempoFormatado = minStr + ":" + segStr;
+
+            let dataFormatada = "";
+            if(partida.dt_inicio != null){
+                let dataObj = new Date(partida.dt_inicio);
+                let dia = dataObj.getDate();
+                let mes = dataObj.toLocaleString('pt-BR', {month: 'short'});
+                dataFormatada = dia + " de " + mes;
+            }
+
+            let lista = document.createElement("li");
+            lista.className = "partida";
+            lista.innerHTML = `
+                <div class="partida-topo">
+                    <span class="selo ${classeSelo}">${nomeStatus}</span>
+                    <span class="partida-nivel">${partida.nivel}</span>
+                </div>
+                <div class="partida-info">
+                    <span class="partida-tempo">${tempoFormatado}</span>
+                    <span class="partida-data">${dataFormatada}</span>
+                </div>`;
+            
+            listaHtml.appendChild(lista);
+        }
+
+    }
+
+    function gerarGrafico(listaPartidas) {
+        for(let i = 0; i < graficosPainel.length; i++){
+            graficosPainel[i].destroy();
+        }
+        graficosPainel = [];
+
+        let partidasParaEvolucao = [];
+
+        for(let i = 0; i < listaPartidas.length; i++){
+            let partida = listaPartidas[i];
+
+            if(partida.status === 'Vitória'){
+                partidasParaEvolucao.push(partida);
+            }
+        }
+
+        if(partidasParaEvolucao.length > 10){
+            partidasParaEvolucao = partidasParaEvolucao.slice(-10);
+        }
+
+        let labelsTempo = [];
+        let dadosTempo = [];
+
+        let contFacil = 0;
+        let contMedio = 0;
+        let contDificil = 0;
+        let contEspecialista = 0;
+
+        let totalVitoriasGrafico = 0;
+        let totalOutrosGrafico = 0;
+
+        for(let i = 0; i < listaPartidas.length; i++){
+            let p = listaPartidas[i];
+            if(p.nivel === 'Fácil'){
+                contFacil++;
+            }else if(p.nivel === 'Médio'){
+                contMedio++;
+            }else if(p.nivel === 'Difícil'){
+                contDificil++;
+            }else{
+                if(p.nivel === 'Especialista'){
+                    contEspecialista++;
+                }
+            }
+
+            if(p.status === 'Vitória'){
+                totalVitoriasGrafico++;
+            }else{
+                totalOutrosGrafico++;
+            }
+        }
+
+        for(let i = 0; i < partidasParaEvolucao.length; i++){
+            let p = partidasParaEvolucao[i];
+
+            if(p.status === 'Vitória'){
+                let dataStr = "";
+                if(p.dt_inicio != null){
+                    let d = new Date(p.dt_inicio);
+                    let dia = d.getDate();
+                    let mes = d.getMonth() + 1;
+
+                    let diaStr = dia;
+                    if(dia < 10){
+                        diaStr = "0" + dia;
+                    }
+
+                    let mesStr = mes;
+                    if(mes < 10){
+                        mesStr = "0" + mes;
+                    }
+
+                    dataStr = diaStr + "/" + mesStr
+                }
+
+                labelsTempo.push(dataStr);
+                dadosTempo.push(p.tempo_seg);
+            }
+        }
+
+        let canvasEvolucao = document.getElementById("graficoEvolucao");
+        let vazioEvolucao = document.getElementById("vazioEvolucao");
+        let areaEvolucao = canvasEvolucao.parentElement;
+
+        if(dadosTempo.length === 0) {
+            areaEvolucao.style.display = "none";
+            vazioEvolucao.hidden = false;
+        }else{
+            areaEvolucao.style.display = "block";
+            vazioEvolucao.hidden = true;
+
+            let graficoLinha = new Chart(canvasEvolucao, {
+                type: 'line',
+                data: {
+                    labels: labelsTempo,
+                    datasets: [{
+                        label: 'Tempo (segundos)',
+                        data: dadosTempo,
+                        borderColor: '#364C63',
+                        backgroundColor: '#364C63',
+                        tension: 0.2,
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                // Transforma o número quando passa o mouse na bolinha
+                                label: function(context) {
+                                    let segundos = context.parsed.y;
+                                    let min = Math.floor(segundos / 60);
+                                    let seg = Math.floor(segundos % 60);
+                                    let minStr = min < 10 ? "0" + min : min;
+                                    let segStr = seg < 10 ? "0" + seg : seg;
+                                    return "Tempo: " + minStr + ":" + segStr;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            ticks: {
+                                // O Chart.js chama essa função sozinho para cada número do eixo Y
+                                callback: function(value) {
+                                    let min = Math.floor(value / 60);
+                                    let seg = Math.floor(value % 60);
+                                    let minStr = min < 10 ? "0" + min : min;
+                                    let segStr = seg < 10 ? "0" + seg : seg;
+                                    return minStr + ":" + segStr;
+                                }
+                            }
+                         },
+                        x: { grid: {display: false}}
+                    }
+                }
+            });
+
+            graficosPainel.push(graficoLinha);
+        }
+
+        // Grafico 2 de barras
+        let canvasNiveis = document.getElementById("graficoNiveis");
+        let vazioNiveis = document.getElementById("vazioNiveis");
+        let areaNiveis = canvasNiveis.parentElement;
+        let somaNiveis = contFacil + contMedio + contDificil + contEspecialista;
+
+        if(somaNiveis === 0 ){
+            areaNiveis.style.display = "none";
+            vazioNiveis.hidden = false;
+        }else{
+            areaNiveis.style.display = "block";
+            vazioNiveis.hidden = true;
+
+            let graficoBarra = new Chart(canvasNiveis, {
+                type: 'bar',
+                data:{
+                    labels: ['Fácil', 'Médio', 'Difícil', 'Especialista'],
+                    datasets: [{
+                        data: [contFacil, contMedio, contDificil, contEspecialista],
+                        backgroundColor: '#364C63',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {legend: {display: false}},
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {precision: 0}
+                        },
+                        x: { grid: {display: false}}
+                    }
+                }
+            });
+
+            graficosPainel.push(graficoBarra);
+        }
+
+        //grafico de Rosca
+        let canvasStatus = document.getElementById("graficoStatus");
+        let vazioStatus = document.getElementById("vazioStatus");
+        let areaStatus = canvasStatus.parentElement;
+        let somaStatus = totalVitoriasGrafico + totalOutrosGrafico;
+
+        if(somaStatus === 0){
+            areaStatus.style.display = "none";
+            vazioStatus.hidden = false;
+        }else{
+            areaStatus.style.display = "block";
+            vazioStatus.hidden = true;
+
+            let porcVitorias = 0;
+            let porcAbandonadas = 0;
+
+            if(somaStatus > 0){
+                porcVitorias = ((totalVitoriasGrafico / somaStatus) * 100).toFixed(0);
+                porcAbandonadas = ((totalOutrosGrafico / somaStatus) * 100).toFixed(0);
+            }
+
+            let labelVitorias = "Vitórias: " + totalVitoriasGrafico + " (" + porcVitorias + "%)";
+            let labelAbandonadas = "Abandonadas: " + totalOutrosGrafico + " (" + porcAbandonadas + "%)";
+
+            let graficoRosca = new Chart(canvasStatus, {
+                type: 'doughnut',
+                data: {
+                    labels: [labelVitorias, labelAbandonadas],
+                    datasets: [{
+                        data: [porcVitorias, porcAbandonadas],
+                        backgroundColor: ['#364C63', '#ECEAE5'],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {legend: {position: 'bottom'}},
+                    cutout: '65%'
+                }
+            });
+            graficosPainel.push(graficoRosca);
+        }
+    }
+    
+    validarSessao();
+
+
+    function sair() {
+        sessionStorage.clear();
+        window.location = "/index.html";
+    }
+</script>
