@@ -75,3 +75,29 @@
     </div>
 </body>
 </html>
+<script>
+    function validarSessao() {
+        let idUsuario = sessionStorage.ID_USUARIO;
+        let nomeUsuario = sessionStorage.NOME_USUARIO;
+        let emailUsuario = sessionStorage.EMAIL_USUARIO;
+
+        if (idUsuario == undefined) {
+            window.location = "../../login.html";
+            return;
+        }
+
+        if (document.getElementById("nomeUsuario")) {
+            document.getElementById("nomeUsuario").innerHTML = nomeUsuario;
+        }
+        if (document.getElementById("emailUsuario")) {
+            document.getElementById("emailUsuario").innerHTML = emailUsuario;
+        }
+    }
+
+    validarSessao();
+
+    function sair() {
+        sessionStorage.clear();
+        window.location = "/index.html";
+    }
+</script>

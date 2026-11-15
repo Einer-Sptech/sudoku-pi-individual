@@ -52,7 +52,28 @@ function autenticar (req, res){
     }
 }
 
+function atualizar(req,res){
+    let novoNome = req.body.nomeServer;
+    let idUsuario = req.params.idUsuario;
+
+    if(novoNome == undefined){
+        res.status(400).send("O novo nome está undefined!");
+    }else if(idUsuario == undefined){
+        res.status(400).send("O id do usuário está undefined!");
+    }else{
+        usuarioModel.atualizarNome(novoNome, idUsuario)
+        .then(function (resultado){
+            res.json(resultado);
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).send("Erro ao atualizar o nome. Tente novamente.");
+        });
+    }
+}
+
 module.exports = {
     cadastrar,
-    autenticar
+    autenticar,
+    atualizar
 }

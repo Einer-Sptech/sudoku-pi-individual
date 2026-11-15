@@ -17,12 +17,12 @@
     display: inline-block;
     padding: 6px 14px;
     border-radius: 999px;
-    background: #E3F5EC;
+    background: #364C63;
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #1E7A4C;
+    color: #fff;
 }
 
 .resultado-titulo {

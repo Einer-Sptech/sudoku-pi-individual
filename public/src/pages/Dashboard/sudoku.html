@@ -113,7 +113,26 @@
     let dataInicioPartida = new Date();
 
     window.onload = function (){
+        validarSessao();
         iniciarJogo();
+    }
+
+    function validarSessao() {
+        let idUsuario = sessionStorage.ID_USUARIO;
+        let nomeUsuario = sessionStorage.NOME_USUARIO;
+        let emailUsuario = sessionStorage.EMAIL_USUARIO;
+
+        if(idUsuario == undefined){
+            window.location = "../login.html";
+            return;
+        }
+
+        if(document.getElementById("nomeUsuario")){
+            document.getElementById("nomeUsuario").innerHTML = nomeUsuario;
+        }
+        if(document.getElementById("emailUsuario")){
+            document.getElementById("emailUsuario").innerHTML = emailUsuario;
+        }
     }
 
     function iniciarJogo(){
@@ -146,15 +165,6 @@
         criarGradeTebuleiro();
 
         cronometro = setInterval(atualizarTempo, 1000);
-
-        document.getElementById("btnApagar").onclick = apagarNumero;
-        document.getElementById("btnDica").onclick = darDica;
-        document.getElementById("btnDesistir").onclick = desistirPartida;
-    
-        let linkJogarOutro = document.getElementById("btnJogarOutro");
-        if(linkJogarOutro) {
-            linkJogarOutro.href = `sudoku.html?nivel=${nivelUrl || 'facil'}`;
-        }
     }
 
     function montarTabuleiro(){
@@ -180,7 +190,9 @@
         for(let i = 0; i < 81; i++){
             posicoes.push(i);
         }
-        posicoes.sort(() => Math.random() - 0.5); // embaralha as posiçoes aleatoriamente
+        posicoes.sort(function() {
+            return(Math.random() - 0.5);
+        }); // embaralha as posiçoes aleatoriamente
 
         //Posiçoes sorteadas em espaço vazio
         for(let i = 0; i < quantidadeVazias; i++){
@@ -230,8 +242,9 @@
 
     //Interação com o jogador
     function selecionarBloco(r, c, elemento) {
-        if(jogoFinalizado) return;
-
+        if(jogoFinalizado){
+            return;
+        }
         if(elementoHtmlSelecionado){
             elementoHtmlSelecionado.classList.remove("bloco-selected");
         }
@@ -244,9 +257,15 @@
     }
 
     function inserirNumero(numero) {
-        if(jogoFinalizado) return;
-        if(linhaSelecionada === -1 || colunaSelecionada === -1) return;
-        if(celulasFixas[linhaSelecionada][colunaSelecionada]) return;
+        if(jogoFinalizado){
+            return;
+        }
+        if(linhaSelecionada === -1 || colunaSelecionada === -1) {
+            return;
+        }
+        if(celulasFixas[linhaSelecionada][colunaSelecionada]){
+            return;
+        }
 
         tabuleiroAtual[linhaSelecionada][colunaSelecionada] = numero;
         if(temConflito(linhaSelecionada, colunaSelecionada, numero)){
@@ -268,11 +287,17 @@
     }
 
     function temConflito(r, c, num) {
-        if(num === 0) return false;
+        if(num === 0){
+            return(false);
+        }
 
         for(let i = 0; i < 9; i++){
-            if(i !== c && tabuleiroAtual[r][i] === num) return true;
-            if(i !== r && tabuleiroAtual[i][c] === num) return true;
+            if(i !== c && tabuleiroAtual[r][i] === num){
+                return(true);
+            }
+            if(i !== r && tabuleiroAtual[i][c] === num){
+                return(true);
+            }
         }
 
         let inicioR = Math.floor(r / 3) * 3;
@@ -281,12 +306,12 @@
         for(let i = inicioR; i < inicioR + 3; i++){
             for(let j = inicioC; j < inicioC + 3; j++){
                 if((i !== r || j !== c) && tabuleiroAtual[i][j] === num){
-                    return true;
+                    return(true);
                 }
             }
         }
 
-        return false;
+        return(false);
     }
 
     function atualizarVisualTela() {
@@ -296,8 +321,12 @@
                 let bloco = document.getElementById(`bloco-${r}-${c}`);
                 let valor = tabuleiroAtual[r][c];
 
-                bloco.innerText = valor === 0 ? "" : valor;
-                if(valor > 0) contadorNumeros[valor]++;
+                let textoValor = "";
+                if(valor > 0){
+                    textoValor = valor;
+                    contadorNumeros[valor]++;
+                }
+                bloco.innerText = textoValor;
 
                 let classeCss = "bloco";
                 if(celulasFixas[r][c]){
@@ -318,25 +347,33 @@
         for(let i = 0; i <= 9; i++){
             let btnDigito = document.getElementById(`digito-${i}`);
             if(btnDigito){
-                btnDigito.disabled = contadorNumeros[i] >= 9;
+                if(contadorNumeros[i] >= 9){
+                    btnDigito.disabled = true;
+                }else{
+                    btnDigito.disabled = false;
+                }
             }
         }
     }
 
     // Dica
     function darDica(){
-        if(jogoFinalizado) return;
+        if(jogoFinalizado){
+            return;
+        }
 
         let candidatas = [];
         for(let r = 0; r < 9; r++){
             for(let c = 0; c < 9; c++){
                 if(!celulasFixas[r][c] && tabuleiroAtual[r][c] !== tabuleiroSolucao[r][c]) {
-                    candidatas.push({r,c});
+                    candidatas.push({r: r, c: c});
                 }
             }
         }
 
-        if(candidatas.length === 0) return;
+        if(candidatas.length === 0){
+            return;
+        }
 
         let alvo = candidatas[Math.floor(Math.random() * candidatas.length)];
         if(linhaSelecionada !== -1 && colunaSelecionada !== -1 && !celulasFixas[linhaSelecionada][colunaSelecionada] && tabuleiroAtual[linhaSelecionada][colunaSelecionada] !== tabuleiroSolucao[linhaSelecionada][colunaSelecionada]){
@@ -347,7 +384,9 @@
         celulasFixas[alvo.r][alvo.c] = true;
 
         let blocoDica = document.getElementById(`bloco-${alvo.r}-${alvo.c}`);
-        if(blocoDica) blocoDica.classList.add("bloco-hint");
+        if(blocoDica){
+            blocoDica.classList.add("bloco-hint");
+        }
 
         quantidadeDicas++;
         document.getElementById("dicas").innerText = quantidadeDicas;
@@ -360,7 +399,16 @@
         segundoDecorridos++;
         let min = Math.floor(segundoDecorridos / 60);
         let seg = segundoDecorridos % 60;
-        document.getElementById("tempo").innerText = `${min < 10 ? "0" + min : min}:${seg < 10 ? "0" + seg : seg}`;
+
+        let minStr = min;
+        if(min < 10){
+            minStr = "0" + min;
+        }
+        let segStr = seg;
+        if(seg < 10){
+            segStr = "0" + seg;
+        }
+        document.getElementById("tempo").innerText = minStr + ':' + segStr;
     }
 
     function verificarVitoria(){
@@ -394,23 +442,45 @@
         sessionStorage.setItem("RES_DICAS", quantidadeDicas);
 
         let dadosPartidaParaBackend = {
-            fkUsuario: sessionStorage.ID_USUARIO || 1, // Exemplo mockado
-            fkNivel: idNivelAtual,                     // 1, 2, 3 ou 4
-            fkStatus: statusId,                        // 1 = Vitória, 2 = Abandonada
-            tempoSeg: segundosDecorridos,
-            erros: quantidadeErros,
-            dicas: quantidadeDicas,
-            dtInicio: dataInicioPartida.toISOString().slice(0, 19).replace('T', ' ')
+            fkUsuarioServer: sessionStorage.ID_USUARIO,
+            fkNivelServer: idNivelAtual,
+            fkStatusServer: statusId,
+            tempoSegServer: segundoDecorridos,
+            errosServer: quantidadeErros,
+            dicasServer: quantidadeDicas
         };
 
-        console.log("🎮 [MOCK BACK-END] Dados prontos para inserir na tabela 'partidas':", dadosPartidaParaBackend);
+        fetch("/partidas/registrar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(dadosPartidaParaBackend)
+        })
+        .then(function (resposta) {
+            if(resposta.ok){
+                console.log("Partida salva com sucesso!");
+            }else{
+                console.error("Erro ao salvar partida.")
+            }
 
-        if (statusId === 1) {
-            // Se venceu, vai para a tela de resultado
-            window.location.href = "public/src/pages/Dashboard/resultado.html";
-        } else {
-            // Se desistiu, volta para a tela de escolher nível
-            window.location.href = "public/src/pages/Dashboard/jogar.html";
-        }
+            if(statusId === 1){
+                window.location.href = "resultado.html";
+            }else{
+                window.location.href = "jogar.html";
+            }
+        })
+        .catch(function (erro){
+            console.error("Erro na requisição:", erro);
+            if(statusId === 1){
+                window.location.href = "resultado.html"; 
+            }else{
+                window.location.href = "jogar.html";
+            }
+        })
+    }
+    function sair(){
+        sessionStorage.clear();
+        window.location = "/index.html"
     }
 </script>
