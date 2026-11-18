@@ -2,7 +2,7 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 16px;
-    margin-top: 32px;
+    margin-top: 16px;
 }
 
 .kpis {
@@ -62,7 +62,7 @@
     display: grid;
     grid-template-columns: 1fr 2fr;
     gap: 16px;
-    margin-top: 32px;
+    margin-top: 16px;
     align-items: stretch;
 }
 

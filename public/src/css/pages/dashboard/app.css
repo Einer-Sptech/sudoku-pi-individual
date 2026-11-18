@@ -8,7 +8,7 @@
     --texto: #4A5568;
     --texto-suave: #5B6B7C;
     --borda: #E4E6E8;
-    --largura-pagina: 1024px;
+    --largura-pagina: 1000px;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -33,7 +33,7 @@ button { font-family: inherit; }
 .conteudo {
     flex: 1;
     min-width: 0;                      /* deixa o conteúdo encolher sem estourar a tela */
-    padding: 40px 24px;
+    padding: 24px 24px;
 }
 
 .pagina {
@@ -57,7 +57,7 @@ button { font-family: inherit; }
 }
 
 .pagina-titulo {
-    margin-top: 16px;
+    margin-top: 10px;
     font-family: var(--font-primary);
     font-size: 36px;
     font-weight: 600;

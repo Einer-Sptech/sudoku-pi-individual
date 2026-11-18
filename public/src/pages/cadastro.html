@@ -124,8 +124,8 @@
         limparMarcas();
         mostrarRequisitos();
 
-        if(nome.length < 3){
-            erros.push("O usuário deve ter pelo menos 3 caracteres.");
+        if(nome.length < 3 || nome.length > 10){
+            erros.push("O usuário deve ter pelo menos 3 caracteres e no máximo 10.");
             ipt_nome.classList.add("invalido");
         }
         if(email.indexOf("@") == -1 || email.indexOf(".") == -1){
