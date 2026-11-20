@@ -29,8 +29,8 @@
             </div>
 
             <div class="sidebar-usuario">
-                <p class="usuario-nome" id="nomeUsuario">Einer</p>
-                <p class="usuario-email" id="emailUsuario">einer@gmail.com</p>
+                <p class="usuario-nome" id="nomeUsuario"></p>
+                <p class="usuario-email" id="emailUsuario"></p>
                 <button type="button" class="btn-sair" onclick="sair()">
                     <i class="fa-solid fa-right-from-bracket"></i>Sair
                 </button>
@@ -45,12 +45,12 @@
                 </header>
                 <div class="perfil-lista">
                     <section class="card perfil-topo">
-                        <span class="avatar" id="avatarPerfil">E</span>
+                        <span class="avatar" id="avatarPerfil"></span>
                         <div>
-                            <h2 class="perfil-nome" id="perfilNome">Einer</h2>
+                            <h2 class="perfil-nome" id="perfilNome"></h2>
                             <p class="perfil-email">
                                 <i class="fa-regular fa-envelope"></i>
-                                <span id="perfilEmail">einer@gmail.com</span>
+                                <span id="perfilEmail"></span>
                             </p>
                         </div>
                     </section>
@@ -58,7 +58,7 @@
                         <h2 class="secao-titulo">Nome de exibição</h2>
                         <p class="secao-descricao">É assim que você aparece na plataforma.</p>
                         <form onsubmit="salvarNome(); return false;">
-                            <label class="campo-rotulo" for="iptNome">Nome</label>
+                            <label class="campo-rotulo" for="iptNome">Nome de Perfil</label>
                             <input class="campo-input" type="text" id="iptNome" value="Einer" autocomplete="name">
                             <button type="submit" class="btn-salvar">Salvar</button>
                             <p class="perfil-msg" id="msgNome" role="status"></p>
