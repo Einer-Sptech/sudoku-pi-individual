@@ -68,5 +68,3 @@ Pré-requisitos: Node.js (versão compatível), MySQL instalado e funcionando.
 - O arquivo `.env.dev` está presente como exemplo. Não comite credenciais reais em repositórios públicos.
 - Para mudar o ambiente de execução você pode ajustar `AMBIENTE_PROCESSO` no `.env` ou editar a configuração em `app.js` (o arquivo contém comentários que mostram como alternar). Preferível usar `.env` para controlar o ambiente.
 - Se tiver problemas de conexão com o banco, verifique as variáveis de ambiente e se o MySQL está permitindo conexões na porta e usuário configurados.
-
-Se quiser, eu posso adicionar instruções para criar as tabelas SQL ou um script de inicialização; diga se deseja isso.
